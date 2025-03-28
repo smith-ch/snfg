@@ -1,0 +1,179 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+import { PageHeader } from "@/components/page-header"
+import ContactForm from "@/components/contact-form"
+import ContactInfo from "@/components/contact-info"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useSearchParams } from "next/navigation"
+import Image from "next/image"
+
+export default function ContactPageClient() {
+  const [mapLoaded, setMapLoaded] = useState(false)
+  const [activeTab, setActiveTab] = useState("form")
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    // Simulate map loading
+    const timer = setTimeout(() => {
+      setMapLoaded(true)
+    }, 1000)
+
+    // Check if there's a hash in the URL to set the active tab
+    const hash = window.location.hash
+    if (hash === "#mapa") {
+      setActiveTab("map")
+    } else if (hash === "#formulario") {
+      setActiveTab("form")
+    }
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Handle tab change from URL
+  useEffect(() => {
+    const tab = searchParams.get("tab")
+    if (tab === "map") {
+      setActiveTab("map")
+    } else if (tab === "form") {
+      setActiveTab("form")
+    }
+  }, [searchParams])
+
+  return (
+    <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-primary/5 to-transparent -z-10"></div>
+      <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
+
+      <div className="container mx-auto px-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <PageHeader
+            title="Contacto"
+            description="Estamos aquí para ayudarle con su próximo proyecto"
+            className="text-center mb-12"
+          />
+        </motion.div>
+
+        <div className="max-w-5xl mx-auto">
+          <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="form" id="formulario">
+                Formulario de Contacto
+              </TabsTrigger>
+              <TabsTrigger value="map" id="mapa">
+                Ubicación en Mapa
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="form">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+              >
+                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl shadow-lg">
+                  <ContactInfo />
+                  <div className="mt-8">
+                    <Image
+                      src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=600&auto=format&fit=crop"
+                      alt="Nuestro equipo de atención al cliente"
+                      width={600}
+                      height={300}
+                      className="rounded-lg object-cover"
+                    />
+                  </div>
+                </div>
+                <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl shadow-lg">
+                  <h3 className="text-2xl font-bold mb-6">Envíenos un Mensaje</h3>
+                  <ContactForm />
+                </div>
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="map">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl shadow-lg"
+              >
+                <h3 className="text-2xl font-bold mb-6">Nuestra Ubicación</h3>
+                <div className="aspect-video relative rounded-lg overflow-hidden shadow-lg">
+                  {!mapLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                    </div>
+                  )}
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d-79.9191156!3d-2.1705376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMsKwMTAnMTMuOSJTIDc5wrA1NScwOC44Ilc!5e0!3m2!1ses!2sec!4v1616593299000!5m2!1ses!2sec"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    className={`${mapLoaded ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
+                    onLoad={() => setMapLoaded(true)}
+                  ></iframe>
+                </div>
+
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-muted/50 p-6 rounded-lg">
+                    <h4 className="font-bold mb-2">Oficina Principal</h4>
+                    <p className="text-muted-foreground mb-1">123 Calle Principal</p>
+                    <p className="text-muted-foreground mb-1">Ciudad, País</p>
+                    <p className="text-muted-foreground mb-1">Código Postal: 12345</p>
+                    <p className="text-muted-foreground">
+                      Tel:{" "}
+                      <a href="tel:+15551234567" className="hover:text-primary transition-colors">
+                        +1 (555) 123-4567
+                      </a>
+                    </p>
+                  </div>
+
+                  <div className="bg-muted/50 p-6 rounded-lg">
+                    <h4 className="font-bold mb-2">Horario de Atención</h4>
+                    <p className="text-muted-foreground mb-1">Lunes a Viernes: 8:00 AM - 6:00 PM</p>
+                    <p className="text-muted-foreground mb-1">Sábados: 9:00 AM - 1:00 PM</p>
+                    <p className="text-muted-foreground">Domingos: Cerrado</p>
+                  </div>
+                </div>
+
+                <div className="mt-8 p-6 bg-primary/10 rounded-lg">
+                  <h4 className="font-bold mb-2">¿Cómo llegar?</h4>
+                  <p className="text-muted-foreground">
+                    Nuestra oficina está ubicada en una zona céntrica de fácil acceso. Puede llegar en transporte
+                    público tomando las líneas 1, 5 o 8 hasta la parada "Centro Comercial". También contamos con
+                    estacionamiento gratuito para nuestros clientes.
+                  </p>
+                </div>
+              </motion.div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-16 text-center"
+        >
+          <h3 className="text-2xl font-bold mb-4">¿Prefiere llamarnos?</h3>
+          <p className="text-lg text-muted-foreground mb-4">
+            Nuestro equipo está disponible para atenderle de lunes a viernes de 8:00 AM a 6:00 PM
+          </p>
+          <a
+            href="tel:+15551234567"
+            className="inline-block px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-shadow"
+          >
+            <span className="text-xl font-bold text-primary">+1 (555) 123-4567</span>
+          </a>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
