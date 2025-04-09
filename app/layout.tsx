@@ -5,13 +5,13 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import ResponsiveChecker from "@/components/responsive-checker"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "SNG SERVIMAX | Servicios de Construcción",
   description: "Empresa líder en servicios de construcción, innovación y sostenibilidad",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -26,12 +26,9 @@ export default function RootLayout({
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <ResponsiveChecker />
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
-
-import './globals.css'

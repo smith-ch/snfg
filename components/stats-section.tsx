@@ -8,19 +8,19 @@ import CountUp from "react-countup"
 const stats = [
   {
     icon: <Building className="h-10 w-10 text-primary" />,
-    value: 500,
+    value: 25,
     label: "Proyectos Completados",
     suffix: "+",
   },
   {
     icon: <Users className="h-10 w-10 text-primary" />,
-    value: 50,
+    value: 10,
     label: "Profesionales",
     suffix: "+",
   },
   {
     icon: <Award className="h-10 w-10 text-primary" />,
-    value: 15,
+    value: 10,
     label: "Años de Experiencia",
     suffix: "+",
   },

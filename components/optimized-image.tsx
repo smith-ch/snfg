@@ -1,10 +1,10 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Image from "next/image"
-import { useState } from "react"
 import { cn } from "@/lib/utils"
 
-type OptimizedImageProps = {
+interface OptimizedImageProps {
   src: string
   alt: string
   fill?: boolean
@@ -14,80 +14,112 @@ type OptimizedImageProps = {
   containerClassName?: string
   priority?: boolean
   quality?: number
-  fadeIn?: boolean
+  fallbackSrc?: string
 }
 
 export default function OptimizedImage({
   src,
   alt,
-  fill,
+  fill = false,
   width,
   height,
   className,
   containerClassName,
   priority = false,
   quality = 75,
-  fadeIn = true,
+  fallbackSrc = "/placeholder.svg",
 }: OptimizedImageProps) {
+  const [imgSrc, setImgSrc] = useState<string>(src)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [hasError, setHasError] = useState(false)
-  const isExternal = typeof src === "string" && src.startsWith("http")
+  const [error, setError] = useState(false)
 
-  // Función para manejar errores de carga de imágenes
+  // Reset state when src changes
+  useEffect(() => {
+    setImgSrc(src)
+    setIsLoaded(false)
+    setError(false)
+  }, [src])
+
   const handleError = () => {
-    setHasError(true)
+    setError(true)
+    setImgSrc(fallbackSrc)
   }
 
-  const handleLoad = () => {
-    setIsLoaded(true)
-  }
+  // Determine if the image is external (starts with http/https)
+  const isExternal = typeof imgSrc === "string" && (imgSrc.startsWith("http") || imgSrc.startsWith("https"))
 
   return (
     <div className={cn("relative overflow-hidden", containerClassName)}>
-      {/* Color de fondo como respaldo */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-600/20" />
-
-      {hasError ? (
-        // Mostrar un gradiente colorido si la imagen falla
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/70 to-purple-600/70" />
-      ) : isExternal ? (
-        // Usar etiqueta img nativa para URLs externas
+      {isExternal ? (
+        // For external images, use a regular img tag with proper attributes
         <img
-          src={src || "/placeholder.svg"}
+          src={imgSrc || "/placeholder.svg"}
           alt={alt}
-          className={cn(
-            className,
-            "transition-opacity duration-500",
-            fill && "absolute inset-0 w-full h-full object-cover",
-            fadeIn && !isLoaded && "opacity-0",
-            fadeIn && isLoaded && "opacity-100",
-          )}
           width={!fill ? width : undefined}
           height={!fill ? height : undefined}
-          onLoad={handleLoad}
           onError={handleError}
+          onLoad={() => setIsLoaded(true)}
+          className={cn(
+            className,
+            "transition-opacity duration-300",
+            fill && "absolute inset-0 w-full h-full object-cover",
+            !isLoaded && "opacity-0",
+            isLoaded && "opacity-100",
+          )}
+          style={fill ? { objectFit: "cover" } : undefined}
         />
       ) : (
-        // Usar Next.js Image para imágenes locales
+        // For internal images, use Next.js Image component
         <Image
-          src={src || "/placeholder.svg"}
+          src={imgSrc || "/placeholder.svg"}
           alt={alt}
           fill={fill}
           width={!fill ? width : undefined}
           height={!fill ? height : undefined}
-          loading={priority ? "eager" : "lazy"}
           quality={quality}
+          priority={priority}
+          onError={handleError}
+          onLoad={() => setIsLoaded(true)}
           className={cn(
             className,
-            "transition-opacity duration-500",
-            fadeIn && !isLoaded && "opacity-0",
-            fadeIn && isLoaded && "opacity-100",
+            "transition-opacity duration-300",
+            !isLoaded && "opacity-0",
+            isLoaded && "opacity-100",
           )}
-          onLoad={() => setIsLoaded(true)}
-          onError={handleError}
         />
+      )}
+
+      {/* Show loading state */}
+      {!isLoaded && !error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {/* Show error state if image failed to load and no fallback is available */}
+      {error && imgSrc === fallbackSrc && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted/20">
+          <div className="text-center p-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mx-auto mb-2 text-muted-foreground"
+            >
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+            </svg>
+            <p className="text-sm text-muted-foreground">Imagen no disponible</p>
+          </div>
+        </div>
       )}
     </div>
   )
 }
-

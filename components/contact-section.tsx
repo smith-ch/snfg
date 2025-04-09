@@ -15,25 +15,25 @@ export default function ContactSection() {
     {
       icon: <Phone className="h-6 w-6 text-primary" />,
       title: "Teléfono",
-      details: "+1 (555) 123-4567",
-      link: "tel:+15551234567",
+      details: "849 460 8077",
+      link: "tel:+18494608077",
     },
     {
       icon: <Mail className="h-6 w-6 text-primary" />,
       title: "Email",
-      details: "info@sngservimax.com",
-      link: "mailto:info@sngservimax.com",
+      details: "sngservimax@gmail.com",
+      link: "mailto:sngservimax@gmail.com",
     },
     {
       icon: <MapPin className="h-6 w-6 text-primary" />,
       title: "Dirección",
-      details: "123 Calle Principal, Ciudad, País",
+      details: "Manzana Q no. El casique de Veron, República Dominicana",
       link: "https://maps.google.com",
     },
   ]
 
   return (
-    <section ref={ref} className="py-16 bg-muted/30">
+    <section ref={ref} className="py-16">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -93,6 +93,11 @@ export default function ContactSection() {
                   Contacto Completo <ArrowRight size={16} />
                 </Link>
               </Button>
+              <Button variant="outline" asChild>
+                <a href={`tel:+18494608077`}>
+                  <Phone className="h-4 w-4 mr-2" /> Llamar ahora
+                </a>
+              </Button>
             </div>
           </motion.div>
 
@@ -111,4 +116,3 @@ export default function ContactSection() {
     </section>
   )
 }
-

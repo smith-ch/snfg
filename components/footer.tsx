@@ -3,7 +3,7 @@
 import type React from "react"
 
 import Link from "next/link"
-import { ArrowUp, Mail, MapPin, Phone, Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
+import { ArrowUp, Mail, MapPin, Phone, Facebook, Instagram } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { toast } from "@/components/ui/use-toast"
@@ -53,25 +53,25 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">SNG SERVIMAX</h3>
             <p className="text-muted-foreground mb-4 text-sm sm:text-base">
-              Empresa líder en servicios de construcción, innovación y sostenibilidad, comprometida con la calidad y la
-              excelencia.
+              Empresa líder en servicios de mantenimiento, laboratorio de hormigón y asistencia financiera, comprometida
+              con la calidad y la excelencia.
             </p>
             <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
               <Phone className="h-4 w-4" />
-              <a href="tel:+15551234567">+1 (555) 123-4567</a>
+              <a href="tel:+18494608077">849 460 8077</a>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mt-2 text-sm">
               <Mail className="h-4 w-4" />
-              <a href="mailto:info@sngservimax.com">info@sngservimax.com</a>
+              <a href="mailto:sngservimax@gmail.com">sngservimax@gmail.com</a>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mt-2 text-sm">
               <MapPin className="h-4 w-4" />
-              <a href="/contacto#mapa">123 Calle Principal, Ciudad, País</a>
+              <a href="/contacto#mapa">Manzana Q no. El casique de Veron, República Dominicana</a>
             </div>
 
             <div className="flex gap-4 mt-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/1BLkdMK3zG/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -80,31 +80,13 @@ export default function Footer() {
                 <Facebook size={18} />
               </a>
               <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Twitter size={18} />
-              </a>
-              <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/sng_servimax?igsh=MTAyMnhveTJrNGIzaQ=="
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Instagram size={18} />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Linkedin size={18} />
               </a>
             </div>
           </div>
@@ -114,31 +96,26 @@ export default function Footer() {
             <ul className="space-y-2 text-sm sm:text-base">
               <li>
                 <Link
-                  href="/servicios#complementarios"
+                  href="/servicios#mantenimiento-viviendas"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Servicios Complementarios
+                  Mantenimiento de Viviendas
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/servicios#innovacion"
+                  href="/servicios#laboratorio-hormigon"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Innovación y Sostenibilidad
-                </Link>
-              </li>
-              <li>
-                <Link href="/servicios#empresas" className="text-muted-foreground hover:text-primary transition-colors">
-                  Servicios para Empresas
+                  Laboratorio de Hormigón
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/servicios#mantenimiento"
+                  href="/servicios#asistencia-financiera"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Mantenimiento y Limpieza
+                  Servicios de Asistencia Financiera
                 </Link>
               </li>
               <li>
@@ -214,7 +191,7 @@ export default function Footer() {
                 <Link href="/servicios" className="text-muted-foreground hover:text-primary transition-colors">
                   Todos los Servicios
                 </Link>
-                <a href="tel:+15551234567" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="tel:+18494608077" className="text-muted-foreground hover:text-primary transition-colors">
                   Llamar Ahora
                 </a>
                 <Link href="/contacto#mapa" className="text-muted-foreground hover:text-primary transition-colors">
@@ -252,4 +229,3 @@ export default function Footer() {
     </footer>
   )
 }
-

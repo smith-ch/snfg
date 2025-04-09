@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { ArrowRight, ChevronDown } from "lucide-react"
+import ImageWithFallback from "@/components/image-with-fallback"
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -29,7 +29,7 @@ export default function HeroSection() {
     {
       title: "Soluciones de construcción innovadoras",
       description: "Transformamos ideas en estructuras sólidas y duraderas",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1920&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1920&auto=format&fit=crop",
       cta: "Nuestros Servicios",
       link: "/servicios",
     },
@@ -43,7 +43,7 @@ export default function HeroSection() {
     {
       title: "Gestión integral de proyectos",
       description: "Desde el diseño hasta la ejecución, nos encargamos de todo",
-      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1920&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1920&auto=format&fit=crop",
       cta: "Conocer Más",
       link: "/nosotros",
     },
@@ -106,7 +106,13 @@ export default function HeroSection() {
             currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0",
           )}
         >
-          <Image src={slide.image || "/placeholder.svg"} alt={slide.title} fill priority className="object-cover" />
+          <ImageWithFallback
+            src={slide.image || "/placeholder.svg"}
+            alt={slide.title}
+            fill
+            priority={index === 0}
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30" />
         </div>
       ))}
@@ -115,7 +121,7 @@ export default function HeroSection() {
         <div className="container mx-auto px-4">
           <div key={`content-${currentSlide}`} className="max-w-3xl text-white">
             <div className="inline-block mb-4 px-3 py-1 border border-primary/50 rounded-full text-xs sm:text-sm font-medium bg-primary/10 backdrop-blur-sm">
-              SNG SERVIMAX - Expertos en Construcción
+              SNG SERVIMAX - Expertos en darte tus servicios en la más alta calidad
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-md leading-tight">
               {slides[currentSlide].title}
@@ -173,4 +179,3 @@ export default function HeroSection() {
     </motion.section>
   )
 }
-

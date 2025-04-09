@@ -4,7 +4,6 @@ import AboutSection from "@/components/about-section"
 import QualityPolicy from "@/components/quality-policy"
 import ContactSection from "@/components/contact-section"
 import TestimonialsSection from "@/components/testimonials-section"
-import ProjectsShowcase from "@/components/projects-showcase"
 import StatsSection from "@/components/stats-section"
 import { Suspense } from "react"
 import Link from "next/link"
@@ -50,7 +49,6 @@ export default function Home() {
         <ServicesOverview />
       </div>
       <div className="bg-gradient-to-b from-muted/30 to-background">
-        <ProjectsShowcase />
         <AboutSection />
       </div>
       <div className="bg-gradient-to-b from-background to-muted/20">
@@ -65,4 +63,3 @@ export default function Home() {
     </div>
   )
 }
-

@@ -7,7 +7,7 @@ import ContactForm from "@/components/contact-form"
 import ContactInfo from "@/components/contact-info"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSearchParams } from "next/navigation"
-import Image from "next/image"
+import OptimizedImage from "@/components/optimized-image"
 
 export default function ContactPageClient() {
   const [mapLoaded, setMapLoaded] = useState(false)
@@ -78,12 +78,13 @@ export default function ContactPageClient() {
                 <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl shadow-lg">
                   <ContactInfo />
                   <div className="mt-8">
-                    <Image
-                      src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=600&auto=format&fit=crop"
+                    <OptimizedImage
+                      src="/images/customer-service.jpg"
                       alt="Nuestro equipo de atención al cliente"
                       width={600}
                       height={300}
                       className="rounded-lg object-cover"
+                      fallbackSrc="/placeholder.svg?height=300&width=600"
                     />
                   </div>
                 </div>
@@ -109,7 +110,7 @@ export default function ContactPageClient() {
                     </div>
                   )}
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d-79.9191156!3d-2.1705376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMsKwMTAnMTMuOSJTIDc5wrA1NScwOC44Ilc!5e0!3m2!1ses!2sec!4v1616593299000!5m2!1ses!2sec"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.9529122602193!2d-68.4191156!3d18.5705376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDM0JzEzLjkiTiA2OMKwMjUnMDguOCJX!5e0!3m2!1ses!2sdo!4v1616593299000!5m2!1ses!2sdo"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -117,19 +118,19 @@ export default function ContactPageClient() {
                     loading="lazy"
                     className={`${mapLoaded ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
                     onLoad={() => setMapLoaded(true)}
+                    title="Ubicación de SNG SERVIMAX"
                   ></iframe>
                 </div>
 
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="bg-muted/50 p-6 rounded-lg">
                     <h4 className="font-bold mb-2">Oficina Principal</h4>
-                    <p className="text-muted-foreground mb-1">123 Calle Principal</p>
-                    <p className="text-muted-foreground mb-1">Ciudad, País</p>
-                    <p className="text-muted-foreground mb-1">Código Postal: 12345</p>
+                    <p className="text-muted-foreground mb-1">Manzana Q no. El casique de Veron</p>
+                    <p className="text-muted-foreground mb-1">República Dominicana</p>
                     <p className="text-muted-foreground">
                       Tel:{" "}
-                      <a href="tel:+15551234567" className="hover:text-primary transition-colors">
-                        +1 (555) 123-4567
+                      <a href="tel:+18494608077" className="hover:text-primary transition-colors">
+                        849 460 8077
                       </a>
                     </p>
                   </div>
@@ -145,9 +146,8 @@ export default function ContactPageClient() {
                 <div className="mt-8 p-6 bg-primary/10 rounded-lg">
                   <h4 className="font-bold mb-2">¿Cómo llegar?</h4>
                   <p className="text-muted-foreground">
-                    Nuestra oficina está ubicada en una zona céntrica de fácil acceso. Puede llegar en transporte
-                    público tomando las líneas 1, 5 o 8 hasta la parada "Centro Comercial". También contamos con
-                    estacionamiento gratuito para nuestros clientes.
+                    Nuestra oficina está ubicada en Manzana Q no. El casique de Veron, República Dominicana. Puede
+                    contactarnos para recibir indicaciones detalladas sobre cómo llegar a nuestras instalaciones.
                   </p>
                 </div>
               </motion.div>
@@ -166,14 +166,13 @@ export default function ContactPageClient() {
             Nuestro equipo está disponible para atenderle de lunes a viernes de 8:00 AM a 6:00 PM
           </p>
           <a
-            href="tel:+15551234567"
+            href="tel:+18494608077"
             className="inline-block px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-shadow"
           >
-            <span className="text-xl font-bold text-primary">+1 (555) 123-4567</span>
+            <span className="text-xl font-bold text-primary">849 460 8077</span>
           </a>
         </motion.div>
       </div>
     </div>
   )
 }
-

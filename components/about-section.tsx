@@ -15,7 +15,7 @@ export default function AboutSection() {
     {
       icon: <Award className="h-10 w-10 text-primary" />,
       title: "Calidad Garantizada",
-      description: "Comprometidos con los más altos estándares de calidad en cada proyecto",
+      description: "Comprometidos con los más altos estándares en cada proyecto",
     },
     {
       icon: <Clock className="h-10 w-10 text-primary" />,
@@ -84,7 +84,7 @@ export default function AboutSection() {
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-12"
               >
                 <div className="bg-primary/80 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
-                  Expertos en Construcción
+                  Expertos en Mantenimiento
                 </div>
               </motion.div>
             </div>
@@ -98,13 +98,11 @@ export default function AboutSection() {
             <div className="inline-block px-3 py-1 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
               SOBRE NOSOTROS
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-heading">
-              Excelencia en Construcción y Servicios
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-heading">Mantenimiento y Servicios Variados</h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Somos una empresa líder en el sector de la construcción, especializada en ofrecer soluciones integrales
-              para todo tipo de proyectos. Con años de experiencia en el mercado, nos hemos consolidado como un
-              referente de calidad y confianza.
+              Somos una empresa líder especializada en ofrecer soluciones integrales para mantenimiento de viviendas,
+              laboratorio de hormigón y servicios de asistencia financiera. Con años de experiencia en el mercado, nos
+              hemos consolidado como un referente de calidad y confianza.
             </p>
             <p className="text-lg text-muted-foreground mb-8">
               Nuestro compromiso con la excelencia y la innovación nos permite ofrecer servicios que superan las
@@ -139,4 +137,3 @@ export default function AboutSection() {
     </section>
   )
 }
-

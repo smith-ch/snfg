@@ -86,20 +86,37 @@ export default function CurriculumForm({ selectedPosition }: CurriculumFormProps
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
 
-    // Simulación de envío de formulario
-    setTimeout(() => {
-      console.log(values)
-      setIsSubmitting(false)
-      form.reset()
-      setFileName(null)
+    try {
+      // En un entorno real, aquí enviaríamos los datos a un endpoint de API
+      // que manejaría el envío del CV a sngservimax@gmail.com
+
+      console.log("Enviando CV a sngservimax@gmail.com", values)
+
+      // Simulamos una espera para la respuesta del servidor
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      // Mostrar mensaje de éxito
       toast({
         title: "Postulación enviada",
         description: "Hemos recibido su postulación. Nos pondremos en contacto con usted pronto.",
       })
-    }, 2000)
+
+      // Resetear el formulario
+      form.reset()
+      setFileName(null)
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error)
+      toast({
+        title: "Error al enviar",
+        description: "Ha ocurrido un error al enviar su postulación. Por favor, inténtelo de nuevo más tarde.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,11 +203,9 @@ export default function CurriculumForm({ selectedPosition }: CurriculumFormProps
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Ingeniero Civil">Ingeniero Civil</SelectItem>
-                  <SelectItem value="Arquitecto">Arquitecto</SelectItem>
-                  <SelectItem value="Técnico en Seguridad y Salud Ocupacional">
-                    Técnico en Seguridad y Salud Ocupacional
-                  </SelectItem>
+                  <SelectItem value="Técnico de Mantenimiento">Técnico de Mantenimiento</SelectItem>
+                  <SelectItem value="Especialista en Laboratorio">Especialista en Laboratorio</SelectItem>
+                  <SelectItem value="Asesor Financiero">Asesor Financiero</SelectItem>
                   <SelectItem value="Supervisor de Obra">Supervisor de Obra</SelectItem>
                   <SelectItem value="Asistente Administrativo">Asistente Administrativo</SelectItem>
                   <SelectItem value="Otro">Otro</SelectItem>
@@ -415,6 +430,10 @@ export default function CurriculumForm({ selectedPosition }: CurriculumFormProps
             "Enviar Postulación"
           )}
         </Button>
+
+        <p className="text-xs text-center text-muted-foreground mt-2">
+          Su postulación será enviada a sngservimax@gmail.com
+        </p>
       </form>
     </Form>
   )
@@ -433,4 +452,3 @@ function Link({ href, className, children }: { href: string; className?: string;
     </a>
   )
 }
-

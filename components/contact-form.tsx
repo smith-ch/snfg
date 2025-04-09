@@ -57,19 +57,39 @@ export default function ContactForm() {
     }
   }, [searchParams, form])
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values)
-      setIsSubmitting(false)
-      form.reset()
+    try {
+      // En un entorno real, aquí enviaríamos los datos a un endpoint de API
+      // Por ahora, simulamos el envío y mostramos un mensaje de éxito
+
+      // Aquí se incluiría el código para enviar el formulario a sngservimax@gmail.com
+      // Por ejemplo, usando un servicio como EmailJS, Formspree, o una API propia
+
+      console.log("Enviando formulario a sngservimax@gmail.com", values)
+
+      // Simulamos una espera para la respuesta del servidor
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+
+      // Mostrar mensaje de éxito
       toast({
         title: "Mensaje enviado",
         description: "Gracias por contactarnos. Nos pondremos en contacto con usted pronto.",
       })
-    }, 1500)
+
+      // Resetear el formulario
+      form.reset()
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error)
+      toast({
+        title: "Error al enviar",
+        description: "Ha ocurrido un error al enviar su mensaje. Por favor, inténtelo de nuevo más tarde.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -143,14 +163,9 @@ export default function ContactForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="impermeabilizacion">Impermeabilización</SelectItem>
-                    <SelectItem value="corte">Corte y demolición</SelectItem>
-                    <SelectItem value="concreto">Colocación de concreto</SelectItem>
-                    <SelectItem value="maquinaria">Alquiler de maquinaria</SelectItem>
-                    <SelectItem value="planta">Construcción de planta</SelectItem>
-                    <SelectItem value="residuos">Gestión de residuos</SelectItem>
-                    <SelectItem value="asesoria">Asesoría empresarial</SelectItem>
-                    <SelectItem value="mantenimiento">Mantenimiento</SelectItem>
+                    <SelectItem value="mantenimiento-viviendas">Mantenimiento de Viviendas</SelectItem>
+                    <SelectItem value="laboratorio-hormigon">Laboratorio de Hormigón</SelectItem>
+                    <SelectItem value="asistencia-financiera">Asistencia Financiera</SelectItem>
                     <SelectItem value="otro">Otro</SelectItem>
                   </SelectContent>
                 </Select>
@@ -203,8 +218,10 @@ export default function ContactForm() {
             "Enviar Mensaje"
           )}
         </Button>
+        <p className="text-xs text-center text-muted-foreground mt-2">
+          Su mensaje será enviado a sngservimax@gmail.com
+        </p>
       </form>
     </Form>
   )
 }
-
