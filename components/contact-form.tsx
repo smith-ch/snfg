@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useSearchParams } from "next/navigation"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,7 +33,7 @@ const formSchema = z.object({
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const searchParams = useSearchParams()
+  const [serviceParam, setServiceParam] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,12 +49,16 @@ export default function ContactForm() {
 
   // Pre-fill the service field if it's in the URL
   useEffect(() => {
-    const service = searchParams.get("service")
-    if (service) {
-      form.setValue("service", service)
-      form.setValue("subject", `Consulta sobre ${service}`)
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search)
+      const service = params.get("service")
+      if (service) {
+        setServiceParam(service)
+        form.setValue("service", service)
+        form.setValue("subject", `Consulta sobre ${service}`)
+      }
     }
-  }, [searchParams, form])
+  }, [form])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)

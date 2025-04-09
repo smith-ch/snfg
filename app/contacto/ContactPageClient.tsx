@@ -6,13 +6,11 @@ import { PageHeader } from "@/components/page-header"
 import ContactForm from "@/components/contact-form"
 import ContactInfo from "@/components/contact-info"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useSearchParams } from "next/navigation"
-import OptimizedImage from "@/components/optimized-image"
+import ImageWithFallback from "@/components/image-with-fallback"
 
 export default function ContactPageClient() {
   const [mapLoaded, setMapLoaded] = useState(false)
   const [activeTab, setActiveTab] = useState("form")
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     // Simulate map loading
@@ -21,25 +19,26 @@ export default function ContactPageClient() {
     }, 1000)
 
     // Check if there's a hash in the URL to set the active tab
-    const hash = window.location.hash
-    if (hash === "#mapa") {
-      setActiveTab("map")
-    } else if (hash === "#formulario") {
-      setActiveTab("form")
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash
+      if (hash === "#mapa") {
+        setActiveTab("map")
+      } else if (hash === "#formulario") {
+        setActiveTab("form")
+      }
+
+      // Check if there's a tab parameter in the URL
+      const params = new URLSearchParams(window.location.search)
+      const tab = params.get("tab")
+      if (tab === "map") {
+        setActiveTab("map")
+      } else if (tab === "form") {
+        setActiveTab("form")
+      }
     }
 
     return () => clearTimeout(timer)
   }, [])
-
-  // Handle tab change from URL
-  useEffect(() => {
-    const tab = searchParams.get("tab")
-    if (tab === "map") {
-      setActiveTab("map")
-    } else if (tab === "form") {
-      setActiveTab("form")
-    }
-  }, [searchParams])
 
   return (
     <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
@@ -78,13 +77,12 @@ export default function ContactPageClient() {
                 <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl shadow-lg">
                   <ContactInfo />
                   <div className="mt-8">
-                    <OptimizedImage
+                    <ImageWithFallback
                       src="/images/customer-service.jpg"
                       alt="Nuestro equipo de atención al cliente"
                       width={600}
                       height={300}
                       className="rounded-lg object-cover"
-                      fallbackSrc="/placeholder.svg?height=300&width=600"
                     />
                   </div>
                 </div>

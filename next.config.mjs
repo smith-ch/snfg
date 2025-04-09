@@ -1,10 +1,3 @@
-let userConfig = undefined
-try {
-  userConfig = await import('./v0-user-next.config')
-} catch (e) {
-  // ignore error
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -14,15 +7,24 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
-    domains: ['images.unsplash.com'], // Permitir imágenes de Unsplash
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '**',
-      },
+    domains: [
+      'images.unsplash.com',
+      'plus.unsplash.com',
+      'source.unsplash.com',
+      'unsplash.com',
+      'images.pexels.com',
+      'pexels.com',
+      'picsum.photos',
+      'loremflickr.com',
+      'placekitten.com',
+      'placeimg.com',
+      'placeholdit.imgix.net',
+      'via.placeholder.com',
+      'dummyimage.com',
+      'cloudinary.com',
+      'res.cloudinary.com'
     ],
+    unoptimized: true,
   },
   experimental: {
     webpackBuildWorker: true,
@@ -31,27 +33,4 @@ const nextConfig = {
   },
 }
 
-mergeConfig(nextConfig, userConfig)
-
-function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
-
-  for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === 'object' &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key],
-      }
-    } else {
-      nextConfig[key] = userConfig[key]
-    }
-  }
-}
-
 export default nextConfig
-

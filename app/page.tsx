@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import HeroSection from "@/components/hero-section"
 import ServicesOverview from "@/components/services-overview"
 import AboutSection from "@/components/about-section"
@@ -5,7 +6,6 @@ import QualityPolicy from "@/components/quality-policy"
 import ContactSection from "@/components/contact-section"
 import TestimonialsSection from "@/components/testimonials-section"
 import StatsSection from "@/components/stats-section"
-import { Suspense } from "react"
 import Link from "next/link"
 import { ArrowRight, BriefcaseBusiness } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,9 @@ import { Button } from "@/components/ui/button"
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <HeroSection />
+      <Suspense fallback={<div className="h-screen flex items-center justify-center">Cargando...</div>}>
+        <HeroSection />
+      </Suspense>
 
       {/* Banner promocional de Oportunidades de Empleo */}
       <div className="bg-gradient-to-r from-primary/10 to-blue-500/10 py-4 relative overflow-hidden shadow-lg rounded-lg mx-4 -mt-8 z-10">
@@ -45,20 +47,30 @@ export default function Home() {
       </div>
 
       <div className="bg-gradient-to-b from-background to-muted/30">
-        <StatsSection />
-        <ServicesOverview />
+        <Suspense fallback={<div className="h-40 flex items-center justify-center">Cargando estadísticas...</div>}>
+          <StatsSection />
+        </Suspense>
+        <Suspense fallback={<div className="h-60 flex items-center justify-center">Cargando servicios...</div>}>
+          <ServicesOverview />
+        </Suspense>
       </div>
       <div className="bg-gradient-to-b from-muted/30 to-background">
-        <AboutSection />
+        <Suspense fallback={<div className="h-60 flex items-center justify-center">Cargando información...</div>}>
+          <AboutSection />
+        </Suspense>
       </div>
       <div className="bg-gradient-to-b from-background to-muted/20">
-        <QualityPolicy />
-        <Suspense fallback={<div>Cargando testimonios...</div>}>
+        <Suspense fallback={<div className="h-40 flex items-center justify-center">Cargando políticas...</div>}>
+          <QualityPolicy />
+        </Suspense>
+        <Suspense fallback={<div className="h-60 flex items-center justify-center">Cargando testimonios...</div>}>
           <TestimonialsSection />
         </Suspense>
       </div>
       <div className="bg-gradient-to-b from-muted/20 to-background">
-        <ContactSection />
+        <Suspense fallback={<div className="h-60 flex items-center justify-center">Cargando contacto...</div>}>
+          <ContactSection />
+        </Suspense>
       </div>
     </div>
   )
