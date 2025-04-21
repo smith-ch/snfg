@@ -62,7 +62,7 @@ export default function AboutSection() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="absolute top-4 left-4 p-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg shadow-lg"
               >
-                <div className="text-3xl font-bold text-primary">15+</div>
+                <div className="text-3xl font-bold text-primary">10+</div>
                 <div className="text-sm">Años de experiencia</div>
               </motion.div>
 
@@ -72,7 +72,7 @@ export default function AboutSection() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="absolute bottom-4 right-4 p-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg shadow-lg"
               >
-                <div className="text-3xl font-bold text-primary">500+</div>
+                <div className="text-3xl font-bold text-primary">25+</div>
                 <div className="text-sm">Proyectos completados</div>
               </motion.div>
 

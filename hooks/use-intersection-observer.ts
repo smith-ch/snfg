@@ -47,4 +47,3 @@ export function useIntersectionObserver({
 
   return [setNode, entry?.isIntersecting || false, entry] as const
 }
-

@@ -34,16 +34,13 @@ export default function ResponsiveChecker() {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
-  // Only show in development
-  if (process.env.NODE_ENV !== "development") {
-    return null
-  }
-
+  // Solo mostrar en desarrollo y oculto con la clase para no interrumpir
   return (
     <div
       className={cn(
         "fixed bottom-4 left-4 z-50 px-3 py-1 text-xs font-mono rounded-full shadow-lg",
         "bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700",
+        "hide-responsive-checker",
       )}
     >
       <div className="flex items-center gap-2">

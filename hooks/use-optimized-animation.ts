@@ -32,4 +32,3 @@ export function useOptimizedAnimation({
 
   return { ref, controls, inView }
 }
-

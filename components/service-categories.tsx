@@ -22,7 +22,7 @@ const serviceCategories = [
         title: "Impermeabilización de estructuras",
         description:
           "Protección contra humedad y filtraciones para todo tipo de estructuras. Utilizamos materiales de alta calidad y técnicas avanzadas para garantizar resultados duraderos.",
-        image: "https://www.miguelcaceres.com/wp-content/uploads/2017/03/impermeabilizar-cubierta-scaled.jpg",
+        image: "https://images.unsplash.com/photo-1565636291267-c03b8c3dac1b?q=80&w=600&auto=format&fit=crop",
       },
       {
         title: "Corte y demolición de concreto",
@@ -34,13 +34,13 @@ const serviceCategories = [
         title: "Colocación de concreto",
         description:
           "Instalación profesional de concreto para todo tipo de proyectos. Garantizamos un acabado perfecto y una resistencia óptima para sus estructuras.",
-        image: "https://c2.staticflickr.com/4/3217/2686572211_be9541455b_b.jpg",
+        image: "https://images.unsplash.com/photo-1517581177682-a085bb7ffb38?q=80&w=600&auto=format&fit=crop",
       },
       {
         title: "Alquiler de maquinaria pesada",
         description:
           "Amplia gama de maquinaria pesada disponible para sus proyectos. Ofrecemos equipos modernos y bien mantenidos con opciones de alquiler flexibles.",
-        image: "https://th.bing.com/th/id/R.60d4c8151528fb202e628f6302e2656d?rik=7pijOO2o1M3pYQ&pid=ImgRaw&r=0",
+        image: "https://images.unsplash.com/photo-1566041510639-8d95a2490bfb?q=80&w=600&auto=format&fit=crop",
       },
     ],
   },
@@ -76,7 +76,7 @@ const serviceCategories = [
     id: "empresas",
     title: "Servicios para Empresas y Proyectos Comerciales",
     description: "Soluciones integrales para empresas y proyectos comerciales",
-    image: "https://th.bing.com/th/id/OIP.qmvBbl4bgpNIlsJ_0fbKbQHaEo?rs=1&pid=ImgDetMain",
+    image: "https://images.unsplash.com/photo-1556156653-e5a7c69cc4c5?q=80&w=800&auto=format&fit=crop",
     icon: "🏢",
     color: "from-purple-500/20 to-purple-600/20",
     services: [
@@ -261,4 +261,3 @@ export default function ServiceCategories() {
     </div>
   )
 }
-

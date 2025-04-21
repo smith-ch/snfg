@@ -24,13 +24,8 @@ export default function QualityPolicy() {
   ]
 
   return (
-    <section ref={ref} className="py-24 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 bg-muted/30 skew-y-3 -z-10 transform-gpu"></div>
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent z-0"></div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-0"></div>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <section ref={ref} className="py-16 sm:py-20">
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -53,7 +48,7 @@ export default function QualityPolicy() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+              className="bg-white dark:bg-gray-800/5 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="flex flex-col items-center text-center">
                 <div className="p-4 bg-primary/10 rounded-full mb-6">{policy.icon}</div>
@@ -68,7 +63,7 @@ export default function QualityPolicy() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-12 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-primary"
+          className="mt-12 p-6 bg-white dark:bg-gray-800/5 rounded-xl shadow-lg border-l-4 border-primary"
         >
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="p-4 bg-primary/10 rounded-full flex-shrink-0">
@@ -88,4 +83,3 @@ export default function QualityPolicy() {
     </section>
   )
 }
-

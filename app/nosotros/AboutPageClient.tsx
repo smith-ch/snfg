@@ -90,15 +90,15 @@ export default function AboutPageClient() {
 
               <div className="grid grid-cols-2 gap-4 mt-8">
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                  <div className="text-3xl font-bold text-primary">15+</div>
+                  <div className="text-3xl font-bold text-primary">10+</div>
                   <div className="text-sm text-muted-foreground">Años de experiencia</div>
                 </div>
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                  <div className="text-3xl font-bold text-primary">500+</div>
+                  <div className="text-3xl font-bold text-primary">25+</div>
                   <div className="text-sm text-muted-foreground">Proyectos completados</div>
                 </div>
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                  <div className="text-3xl font-bold text-primary">50+</div>
+                  <div className="text-3xl font-bold text-primary">10+</div>
                   <div className="text-sm text-muted-foreground">Profesionales</div>
                 </div>
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -169,7 +169,7 @@ export default function AboutPageClient() {
           <h3 className="text-2xl font-bold mb-4">¿Quiere formar parte de nuestro equipo?</h3>
           <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
             Estamos siempre en búsqueda de talento para unirse a nuestro equipo. Si está interesado en formar parte de
-            SNG servimax, envíenos su currículum.
+            SNG SERVIMAX, envíenos su currículum.
           </p>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
@@ -197,4 +197,3 @@ export default function AboutPageClient() {
     </div>
   )
 }
-

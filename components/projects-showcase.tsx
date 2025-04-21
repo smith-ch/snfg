@@ -59,7 +59,7 @@ export default function ProjectsShowcase() {
     setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length)
   }
 
-  const handleViewDetails = (project: { title: any; description?: string; image?: string; category?: string; year?: string; location?: string; features?: string[]; detailsLink?: string; galleryLink?: string }) => {
+  const handleViewDetails = (project) => {
     // For now, we'll just show a toast since the actual project pages don't exist yet
     toast({
       title: "Navegando a detalles del proyecto",
@@ -67,7 +67,7 @@ export default function ProjectsShowcase() {
     })
   }
 
-  const handleViewGallery = (project: { title: any; description?: string; image?: string; category?: string; year?: string; location?: string; features?: string[]; detailsLink?: string; galleryLink?: string }) => {
+  const handleViewGallery = (project) => {
     // For now, we'll just show a toast since the actual gallery pages don't exist yet
     toast({
       title: "Abriendo galería",

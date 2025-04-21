@@ -15,7 +15,8 @@ const serviceCategories = [
     description: "Soluciones completas para el mantenimiento y cuidado de su hogar o propiedad residencial.",
     icon: "🏠",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop",
-    color: "from-blue-500 to-blue-600",
+    color: "from-primary to-blue-600",
+    iconBg: "bg-primary/10",
     services: [
       {
         title: "Reparaciones generales",
@@ -46,7 +47,8 @@ const serviceCategories = [
       "Análisis, pruebas y certificación de calidad para todo tipo de hormigón y materiales de construcción.",
     icon: "🧪",
     image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop",
-    color: "from-green-500 to-green-600",
+    color: "from-secondary to-indigo-600",
+    iconBg: "bg-secondary/10",
     services: [
       {
         title: "Pruebas de resistencia",
@@ -76,7 +78,8 @@ const serviceCategories = [
     description: "Soluciones financieras para facilitar sus proyectos de construcción y mantenimiento.",
     icon: "💰",
     image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop",
-    color: "from-purple-500 to-purple-600",
+    color: "from-accent to-purple-600",
+    iconBg: "bg-accent/10",
     services: [
       {
         title: "Financiamiento de proyectos",
@@ -135,7 +138,7 @@ export default function ServicesOverview() {
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-gray-800/5 backdrop-blur-sm">
+              <Card className="h-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-glass hover-scale">
                 <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                   <Image
                     src={category.image || "/placeholder.svg"}
@@ -159,7 +162,9 @@ export default function ServicesOverview() {
                   <ul className="space-y-2">
                     {category.services.slice(0, 2).map((service, index) => (
                       <li key={index} className="flex gap-2 group/item">
-                        <span className="text-primary flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
+                        <span
+                          className={`${category.iconBg} p-1 rounded-full flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform`}
+                        >
                           {service.icon}
                         </span>
                         <div>
@@ -197,7 +202,7 @@ export default function ServicesOverview() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-8 sm:mt-12 text-center"
         >
-          <Button size="lg" className="btn-gradient shadow-blue group text-sm sm:text-base" asChild>
+          <Button size="lg" className="gradient-animated shadow-blue group text-sm sm:text-base" asChild>
             <Link href="/servicios" className="flex items-center gap-2">
               Ver todos nuestros servicios
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

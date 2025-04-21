@@ -11,24 +11,32 @@ const stats = [
     value: 25,
     label: "Proyectos Completados",
     suffix: "+",
+    color: "bg-primary/10",
+    shadowColor: "shadow-blue",
   },
   {
-    icon: <Users className="h-10 w-10 text-primary" />,
+    icon: <Users className="h-10 w-10 text-secondary" />,
     value: 10,
     label: "Profesionales",
     suffix: "+",
+    color: "bg-secondary/10",
+    shadowColor: "shadow-accent",
   },
   {
-    icon: <Award className="h-10 w-10 text-primary" />,
+    icon: <Award className="h-10 w-10 text-accent" />,
     value: 10,
     label: "Años de Experiencia",
     suffix: "+",
+    color: "bg-accent/10",
+    shadowColor: "shadow-blue",
   },
   {
-    icon: <CheckCircle className="h-10 w-10 text-primary" />,
+    icon: <CheckCircle className="h-10 w-10 text-secondary" />,
     value: 100,
     label: "Clientes Satisfechos",
     suffix: "%",
+    color: "bg-secondary/10",
+    shadowColor: "shadow-accent",
   },
 ]
 
@@ -37,30 +45,25 @@ export default function StatsSection() {
   const isInView = useInView(ref, { once: true, amount: 0.2 })
 
   return (
-    <section ref={ref} className="py-16 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 bg-primary/5 skew-y-3 -z-10 transform-gpu"></div>
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent z-0"></div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-0"></div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <section ref={ref} className="py-12 sm:py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center"
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              className="card-glass p-6 rounded-xl hover-scale"
             >
               <div className="flex justify-center mb-4">
-                <div className="p-3 bg-primary/10 rounded-full">{stat.icon}</div>
+                <div className={`p-3 ${stat.color} rounded-full ${stat.shadowColor}`}>{stat.icon}</div>
               </div>
-              <div className="text-4xl font-bold mb-2 text-gradient">
+              <div className="text-4xl font-bold mb-2 text-center gradient-heading">
                 <CountUp end={stat.value} duration={2.5} enableScrollSpy scrollSpyOnce />
                 {stat.suffix}
               </div>
-              <div className="text-muted-foreground">{stat.label}</div>
+              <div className="text-muted-foreground text-center">{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -68,4 +71,3 @@ export default function StatsSection() {
     </section>
   )
 }
-

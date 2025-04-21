@@ -70,32 +70,36 @@ export default function HeroSection() {
     >
       {/* Partículas animadas */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-primary/30 animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-primary/30 animate-pulse-slow"></div>
         <div
-          className="absolute top-1/3 left-1/2 w-3 h-3 rounded-full bg-blue-500/30 animate-pulse"
+          className="absolute top-1/3 left-1/2 w-3 h-3 rounded-full bg-secondary/30 animate-pulse-slow"
           style={{ animationDelay: "0.5s" }}
         ></div>
         <div
-          className="absolute top-2/3 left-1/3 w-2 h-2 rounded-full bg-primary/30 animate-pulse"
+          className="absolute top-2/3 left-1/3 w-2 h-2 rounded-full bg-primary/30 animate-pulse-slow"
           style={{ animationDelay: "1s" }}
         ></div>
         <div
-          className="absolute top-1/2 left-3/4 w-3 h-3 rounded-full bg-blue-500/30 animate-pulse"
+          className="absolute top-1/2 left-3/4 w-3 h-3 rounded-full bg-secondary/30 animate-pulse-slow"
           style={{ animationDelay: "1.5s" }}
         ></div>
         <div
-          className="absolute top-3/4 left-1/4 w-2 h-2 rounded-full bg-primary/30 animate-pulse"
+          className="absolute top-3/4 left-1/4 w-2 h-2 rounded-full bg-accent/30 animate-pulse-slow"
           style={{ animationDelay: "2s" }}
         ></div>
         <div
-          className="absolute top-1/4 left-2/3 w-3 h-3 rounded-full bg-blue-500/30 animate-pulse"
+          className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-accent/30 animate-pulse-slow"
+          style={{ animationDelay: "2s" }}
+        ></div>
+        <div
+          className="absolute top-1/4 left-2/3 w-3 h-3 rounded-full bg-accent/30 animate-pulse-slow"
           style={{ animationDelay: "2.5s" }}
         ></div>
       </div>
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full pattern-dots opacity-10 z-0"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-pattern opacity-10 z-0"></div>
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl z-0"></div>
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl z-0"></div>
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/20 rounded-full blur-3xl z-0"></div>
 
       {/* Slides */}
       {slides.map((slide, index) => (
@@ -130,7 +134,7 @@ export default function HeroSection() {
               {slides[currentSlide].description}
             </p>
             <div className="flex flex-wrap gap-3 md:gap-4">
-              <Button size="lg" className="btn-gradient shadow-blue group text-sm md:text-base" asChild>
+              <Button size="lg" className="gradient-animated shadow-blue group text-sm md:text-base" asChild>
                 <Link href={slides[currentSlide].link} className="flex items-center gap-2">
                   {slides[currentSlide].cta}
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -157,7 +161,9 @@ export default function HeroSection() {
             onClick={() => setCurrentSlide(index)}
             className={cn(
               "w-2 h-2 md:w-3 md:h-3 rounded-full transition-all",
-              currentSlide === index ? "bg-primary w-6 md:w-8" : "bg-white/50 hover:bg-white/80",
+              currentSlide === index
+                ? "bg-gradient-to-r from-primary to-secondary w-6 md:w-8"
+                : "bg-white/50 hover:bg-white/80",
             )}
             aria-label={`Ir a diapositiva ${index + 1}`}
           />
