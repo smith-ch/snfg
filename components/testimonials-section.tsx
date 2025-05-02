@@ -12,28 +12,28 @@ const testimonials = [
     position: "Director de Proyectos, Constructora XYZ",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop",
     stars: 5,
-    text: "SNG SERVIMAX ha sido un socio excepcional en nuestros proyectos. Su profesionalismo y calidad de trabajo son incomparables. Recomendaría sus servicios sin dudarlo.",
+    text: "SNG Servimax ha sido un socio excepcional en nuestros proyectos. Su profesionalismo y calidad de trabajo son incomparables. Recomendaría sus servicios sin dudarlo.",
   },
   {
     name: "María González",
     position: "Gerente de Operaciones, Inmobiliaria ABC",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop",
     stars: 5,
-    text: "Hemos trabajado con SNG SERVIMAX en múltiples proyectos y siempre han superado nuestras expectativas. Su atención al detalle y compromiso con la calidad son excepcionales.",
+    text: "Hemos trabajado con SNG Servimax en múltiples proyectos y siempre han superado nuestras expectativas. Su atención al detalle y compromiso con la calidad son excepcionales.",
   },
   {
     name: "Juan Pérez",
     position: "Propietario, Edificio Residencial",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
     stars: 4,
-    text: "Contraté a SNG SERVIMAX para el mantenimiento de mi edificio y quedé muy satisfecho con los resultados. El trabajo fue realizado de manera eficiente y profesional.",
+    text: "Contraté a SNG Servimax para el mantenimiento de mi edificio y quedé muy satisfecho con los resultados. El trabajo fue realizado de manera eficiente y profesional.",
   },
   {
     name: "Ana Martínez",
     position: "Arquitecta, Estudio de Arquitectura",
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
     stars: 5,
-    text: "Como arquitecta, valoro mucho la precisión y calidad en la ejecución de mis diseños. SNG SERVIMAX ha sido un colaborador excepcional, entendiendo perfectamente mis visiones y materializándolas con gran profesionalismo.",
+    text: "Como arquitecta, valoro mucho la precisión y calidad en la ejecución de mis diseños. SNG Servimax ha sido un colaborador excepcional, entendiendo perfectamente mis visiones y materializándolas con gran profesionalismo.",
   },
 ]
 
