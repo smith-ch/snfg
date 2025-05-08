@@ -8,10 +8,10 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
 const team = [
   {
-    name: "Carlos Mendoza",
+    name: "Smith Rodriguez",
     position: "Director General",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
-    bio: "Con más de 20 años de experiencia en el sector de la construcción, Carlos lidera nuestra empresa con visión y compromiso.",
+    bio: "Con mas de 5 años de experiencia ofreciedo servicios varios a diferentes instituciones",
     social: {
       linkedin: "#",
       twitter: "#",
