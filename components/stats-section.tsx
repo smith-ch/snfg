@@ -8,35 +8,27 @@ import CountUp from "react-countup"
 const stats = [
   {
     icon: <Building className="h-10 w-10 text-primary" />,
-    value: 25,
+    value: 500,
     label: "Proyectos Completados",
     suffix: "+",
-    color: "bg-primary/10",
-    shadowColor: "shadow-blue",
   },
   {
-    icon: <Users className="h-10 w-10 text-secondary" />,
-    value: 10,
+    icon: <Users className="h-10 w-10 text-primary" />,
+    value: 50,
     label: "Profesionales",
     suffix: "+",
-    color: "bg-secondary/10",
-    shadowColor: "shadow-accent",
   },
   {
-    icon: <Award className="h-10 w-10 text-accent" />,
-    value: 10,
+    icon: <Award className="h-10 w-10 text-primary" />,
+    value: 15,
     label: "Años de Experiencia",
     suffix: "+",
-    color: "bg-accent/10",
-    shadowColor: "shadow-blue",
   },
   {
-    icon: <CheckCircle className="h-10 w-10 text-secondary" />,
+    icon: <CheckCircle className="h-10 w-10 text-primary" />,
     value: 100,
     label: "Clientes Satisfechos",
     suffix: "%",
-    color: "bg-secondary/10",
-    shadowColor: "shadow-accent",
   },
 ]
 
@@ -53,17 +45,17 @@ export default function StatsSection() {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="card-glass p-6 rounded-xl hover-scale"
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-white/80 dark:bg-gray-800/5 backdrop-blur-sm p-6 rounded-xl shadow-md text-center"
             >
               <div className="flex justify-center mb-4">
-                <div className={`p-3 ${stat.color} rounded-full ${stat.shadowColor}`}>{stat.icon}</div>
+                <div className="p-3 bg-primary/10 rounded-full">{stat.icon}</div>
               </div>
-              <div className="text-4xl font-bold mb-2 text-center gradient-heading">
+              <div className="text-4xl font-bold mb-2 text-gradient">
                 <CountUp end={stat.value} duration={2.5} enableScrollSpy scrollSpyOnce />
                 {stat.suffix}
               </div>
-              <div className="text-muted-foreground text-center">{stat.label}</div>
+              <div className="text-muted-foreground">{stat.label}</div>
             </motion.div>
           ))}
         </div>
@@ -71,3 +63,4 @@ export default function StatsSection() {
     </section>
   )
 }
+

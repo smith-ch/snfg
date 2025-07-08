@@ -15,7 +15,7 @@ export default function AboutSection() {
     {
       icon: <Award className="h-10 w-10 text-primary" />,
       title: "Calidad Garantizada",
-      description: "Comprometidos con los más altos estándares en cada proyecto",
+      description: "Comprometidos con los más altos estándares de calidad en cada proyecto",
     },
     {
       icon: <Clock className="h-10 w-10 text-primary" />,
@@ -62,7 +62,7 @@ export default function AboutSection() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="absolute top-4 left-4 p-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg shadow-lg"
               >
-                <div className="text-3xl font-bold text-primary">10+</div>
+                <div className="text-3xl font-bold text-primary">15+</div>
                 <div className="text-sm">Años de experiencia</div>
               </motion.div>
 
@@ -72,7 +72,7 @@ export default function AboutSection() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="absolute bottom-4 right-4 p-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg shadow-lg"
               >
-                <div className="text-3xl font-bold text-primary">25+</div>
+                <div className="text-3xl font-bold text-primary">500+</div>
                 <div className="text-sm">Proyectos completados</div>
               </motion.div>
 
@@ -84,7 +84,7 @@ export default function AboutSection() {
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-12"
               >
                 <div className="bg-primary/80 text-white px-6 py-3 rounded-full font-bold text-xl shadow-lg">
-                  Expertos en Mantenimiento
+                  Expertos en Construcción
                 </div>
               </motion.div>
             </div>
@@ -98,11 +98,13 @@ export default function AboutSection() {
             <div className="inline-block px-3 py-1 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
               SOBRE NOSOTROS
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-heading">Mantenimiento y Servicios Variados</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-heading">
+              Excelencia en Construcción y Servicios
+            </h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Somos una empresa líder especializada en ofrecer soluciones integrales para mantenimiento de viviendas,
-              laboratorio de hormigón y servicios de asistencia financiera. Con años de experiencia en el mercado, nos
-              hemos consolidado como un referente de calidad y confianza.
+              Somos una empresa líder en el sector de la construcción, especializada en ofrecer soluciones integrales
+              para todo tipo de proyectos. Con años de experiencia en el mercado, nos hemos consolidado como un
+              referente de calidad y confianza.
             </p>
             <p className="text-lg text-muted-foreground mb-8">
               Nuestro compromiso con la excelencia y la innovación nos permite ofrecer servicios que superan las
@@ -116,7 +118,7 @@ export default function AboutSection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                  className="flex flex-col items-center text-center p-4 rounded-xl card-glass hover-scale"
+                  className="flex flex-col items-center text-center p-4 rounded-xl bg-white dark:bg-gray-800/5 shadow-md hover:shadow-lg transition-shadow"
                 >
                   <div className="p-3 bg-primary/10 rounded-full mb-3">{feature.icon}</div>
                   <h3 className="text-lg font-medium mb-2">{feature.title}</h3>
@@ -137,3 +139,4 @@ export default function AboutSection() {
     </section>
   )
 }
+

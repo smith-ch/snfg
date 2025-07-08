@@ -9,7 +9,7 @@ interface MapComponentProps {
 }
 
 export default function MapComponent({
-  address = "Manzana Q no. El casique de Veron, República Dominicana",
+  address = "123 Calle Principal, Ciudad, País",
   zoom = 15,
   height = "400px",
 }: MapComponentProps) {
@@ -22,7 +22,7 @@ export default function MapComponent({
   const mapUrl = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedAddress}&zoom=${zoom}`
 
   // For demo purposes, we'll use a static map from Google Maps
-  const staticMapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.9529122602193!2d-68.4191156!3d18.5705376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDM0JzEzLjkiTiA2OMKwMjUnMDguOCJX!5e0!3m2!1ses!2sdo!4v1616593299000!5m2!1ses!2sdo`
+  const staticMapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d-79.9191156!3d-2.1705376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMsKwMTAnMTMuOSJTIDc5wrA1NScwOC44Ilc!5e0!3m2!1ses!2sec!4v1616593299000!5m2!1ses!2sec`
 
   useEffect(() => {
     // Simulate map loading
@@ -56,3 +56,4 @@ export default function MapComponent({
     </div>
   )
 }
+

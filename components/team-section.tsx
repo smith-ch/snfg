@@ -8,10 +8,10 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 
 const team = [
   {
-    name: "Smith Rodriguez",
+    name: "Carlos Mendoza",
     position: "Director General",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
-    bio: "Con mas de 5 años de experiencia ofreciedo servicios varios a diferentes instituciones",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
+    bio: "Con más de 20 años de experiencia en el sector de la construcción, Carlos lidera nuestra empresa con visión y compromiso.",
     social: {
       linkedin: "#",
       twitter: "#",
@@ -20,7 +20,7 @@ const team = [
   {
     name: "Laura Sánchez",
     position: "Directora de Operaciones",
-    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
     bio: "Especialista en gestión de proyectos y optimización de procesos, Laura garantiza la eficiencia en todas nuestras operaciones.",
     social: {
       linkedin: "#",
@@ -30,7 +30,7 @@ const team = [
   {
     name: "Miguel Rodríguez",
     position: "Jefe de Ingeniería",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
     bio: "Ingeniero civil con amplia experiencia en diseño y ejecución de proyectos complejos de construcción.",
     social: {
       linkedin: "#",
@@ -65,7 +65,7 @@ export default function TeamSection() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
-            <Card className="h-full overflow-hidden card-glass hover-scale">
+            <Card className="h-full overflow-hidden hover:shadow-md transition-shadow">
               <div className="relative h-64 w-full overflow-hidden">
                 <Image
                   src={member.image || "/placeholder.svg"}
@@ -128,3 +128,4 @@ export default function TeamSection() {
     </div>
   )
 }
+

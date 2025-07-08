@@ -13,7 +13,7 @@ const projects = [
     title: "Edificio Residencial Torres del Sol",
     description:
       "Construcción de un complejo residencial de 120 apartamentos con áreas comunes y estacionamiento subterráneo.",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop",
     category: "Construcción Residencial",
     year: "2023",
     location: "Ciudad Central",
@@ -24,7 +24,7 @@ const projects = [
   {
     title: "Centro Comercial Metropolis",
     description: "Impermeabilización y mantenimiento integral de un centro comercial de 50,000 m² en operación.",
-    image: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1604754742629-3e0498a7dc4d?q=80&w=800&auto=format&fit=crop",
     category: "Impermeabilización",
     year: "2022",
     location: "Zona Norte",
@@ -76,7 +76,7 @@ export default function ProjectsShowcase() {
   }
 
   return (
-    <section ref={ref} className="py-24 relative overflow-hidden section-angle">
+    <section ref={ref} className="py-24 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent z-0"></div>
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-0"></div>
@@ -273,3 +273,4 @@ export default function ProjectsShowcase() {
     </section>
   )
 }
+

@@ -3,7 +3,7 @@
 import type React from "react"
 
 import Link from "next/link"
-import { ArrowUp, Mail, MapPin, Phone, Facebook, Instagram } from "lucide-react"
+import { ArrowUp, Mail, MapPin, Phone, Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { toast } from "@/components/ui/use-toast"
@@ -43,52 +43,64 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-gradient-to-b from-muted/30 to-muted/50 pt-10 sm:pt-12 md:pt-16 pb-6 sm:pb-8 relative">
-      {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-background to-transparent"></div>
-      <div className="absolute -top-10 left-1/4 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-10 right-1/4 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+    <footer className="bg-muted/30 pt-10 sm:pt-12 md:pt-16 pb-6 sm:pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 sm:mb-12">
           <div>
-            <h3 className="text-lg font-bold mb-4">
-              <span className="gradient-heading">SNG SERVIMAX</span>
-            </h3>
+            <h3 className="text-lg font-bold mb-4">SNG SERVIMAX</h3>
             <p className="text-muted-foreground mb-4 text-sm sm:text-base">
-              Empresa líder en servicios de mantenimiento, laboratorio de hormigón y asistencia financiera, comprometida
-              con la calidad y la excelencia.
+              Empresa líder en servicios de construcción, innovación y sostenibilidad, comprometida con la calidad y la
+              excelencia.
             </p>
             <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors text-sm">
               <Phone className="h-4 w-4" />
-              <a href="tel:+18494608077">849 460 8077</a>
+              <a href="tel:+15551234567">+1 (555) 123-4567</a>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mt-2 text-sm">
               <Mail className="h-4 w-4" />
-              <a href="mailto:sngservimax@gmail.com">sngservimax@gmail.com</a>
+              <a href="mailto:info@sngservimax.com">info@sngservimax.com</a>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors mt-2 text-sm">
               <MapPin className="h-4 w-4" />
-              <a href="/contacto#mapa">Manzana Q no. El casique de Veron, República Dominicana</a>
+              <a href="/contacto#mapa">123 Calle Principal, Ciudad, País</a>
             </div>
 
             <div className="flex gap-4 mt-4">
               <a
-                href="https://www.facebook.com/share/1BLkdMK3zG/"
+                href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="bg-muted/80 p-2 rounded-full hover:bg-primary/20 transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Facebook size={18} />
               </a>
               <a
-                href="https://www.instagram.com/sng_servimax?igsh=MTAyMnhveTJrNGIzaQ=="
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Twitter size={18} />
+              </a>
+              <a
+                href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="bg-muted/80 p-2 rounded-full hover:bg-primary/20 transition-colors"
+                className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Instagram size={18} />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Linkedin size={18} />
               </a>
             </div>
           </div>
@@ -98,26 +110,31 @@ export default function Footer() {
             <ul className="space-y-2 text-sm sm:text-base">
               <li>
                 <Link
-                  href="/servicios#mantenimiento-viviendas"
+                  href="/servicios#complementarios"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Mantenimiento de Viviendas
+                  Servicios Complementarios
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/servicios#laboratorio-hormigon"
+                  href="/servicios#innovacion"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Laboratorio de Hormigón
+                  Innovación y Sostenibilidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/servicios#empresas" className="text-muted-foreground hover:text-primary transition-colors">
+                  Servicios para Empresas
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/servicios#asistencia-financiera"
+                  href="/servicios#mantenimiento"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Servicios de Asistencia Financiera
+                  Mantenimiento y Limpieza
                 </Link>
               </li>
               <li>
@@ -173,10 +190,10 @@ export default function Footer() {
                 placeholder="Su email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex h-9 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 input-focus-effect"
+                className="flex h-9 sm:h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               />
-              <Button type="submit" size="sm" className="gradient-animated" disabled={isSubscribing}>
+              <Button type="submit" size="sm" disabled={isSubscribing}>
                 {isSubscribing ? "..." : "Enviar"}
               </Button>
             </form>
@@ -193,7 +210,7 @@ export default function Footer() {
                 <Link href="/servicios" className="text-muted-foreground hover:text-primary transition-colors">
                   Todos los Servicios
                 </Link>
-                <a href="tel:+18494608077" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="tel:+15551234567" className="text-muted-foreground hover:text-primary transition-colors">
                   Llamar Ahora
                 </a>
                 <Link href="/contacto#mapa" className="text-muted-foreground hover:text-primary transition-colors">
@@ -222,7 +239,7 @@ export default function Footer() {
       <Button
         variant="outline"
         size="icon"
-        className="fixed bottom-4 right-4 rounded-full shadow-lg w-8 h-8 sm:w-10 sm:h-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:bg-primary/20"
+        className="fixed bottom-4 right-4 rounded-full shadow-md w-8 h-8 sm:w-10 sm:h-10"
         onClick={scrollToTop}
         aria-label="Volver arriba"
       >
@@ -231,3 +248,4 @@ export default function Footer() {
     </footer>
   )
 }
+

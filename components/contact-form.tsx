@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useSearchParams } from "next/navigation"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -33,7 +34,7 @@ const formSchema = z.object({
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [serviceParam, setServiceParam] = useState<string | null>(null)
+  const searchParams = useSearchParams()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,50 +50,26 @@ export default function ContactForm() {
 
   // Pre-fill the service field if it's in the URL
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search)
-      const service = params.get("service")
-      if (service) {
-        setServiceParam(service)
-        form.setValue("service", service)
-        form.setValue("subject", `Consulta sobre ${service}`)
-      }
+    const service = searchParams.get("service")
+    if (service) {
+      form.setValue("service", service)
+      form.setValue("subject", `Consulta sobre ${service}`)
     }
-  }, [form])
+  }, [searchParams, form])
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
 
-    try {
-      // En un entorno real, aquí enviaríamos los datos a un endpoint de API
-      // Por ahora, simulamos el envío y mostramos un mensaje de éxito
-
-      // Aquí se incluiría el código para enviar el formulario a sngservimax@gmail.com
-      // Por ejemplo, usando un servicio como EmailJS, Formspree, o una API propia
-
-      console.log("Enviando formulario a sngservimax@gmail.com", values)
-
-      // Simulamos una espera para la respuesta del servidor
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // Mostrar mensaje de éxito
+    // Simulate API call
+    setTimeout(() => {
+      console.log(values)
+      setIsSubmitting(false)
+      form.reset()
       toast({
         title: "Mensaje enviado",
         description: "Gracias por contactarnos. Nos pondremos en contacto con usted pronto.",
       })
-
-      // Resetear el formulario
-      form.reset()
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error)
-      toast({
-        title: "Error al enviar",
-        description: "Ha ocurrido un error al enviar su mensaje. Por favor, inténtelo de nuevo más tarde.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
+    }, 1500)
   }
 
   return (
@@ -106,11 +83,7 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Su nombre"
-                    className="bg-white/50 dark:bg-gray-800/50 input-focus-effect"
-                    {...field}
-                  />
+                  <Input placeholder="Su nombre" className="bg-white/50 dark:bg-gray-800/50" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,12 +96,7 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Su email"
-                    type="email"
-                    className="bg-white/50 dark:bg-gray-800/50 input-focus-effect"
-                    {...field}
-                  />
+                  <Input placeholder="Su email" type="email" className="bg-white/50 dark:bg-gray-800/50" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,11 +111,7 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Teléfono</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Su teléfono"
-                    className="bg-white/50 dark:bg-gray-800/50 input-focus-effect"
-                    {...field}
-                  />
+                  <Input placeholder="Su teléfono" className="bg-white/50 dark:bg-gray-800/50" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -166,9 +130,14 @@ export default function ContactForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="mantenimiento-viviendas">Mantenimiento de Viviendas</SelectItem>
-                    <SelectItem value="laboratorio-hormigon">Laboratorio de Hormigón</SelectItem>
-                    <SelectItem value="asistencia-financiera">Asistencia Financiera</SelectItem>
+                    <SelectItem value="impermeabilizacion">Impermeabilización</SelectItem>
+                    <SelectItem value="corte">Corte y demolición</SelectItem>
+                    <SelectItem value="concreto">Colocación de concreto</SelectItem>
+                    <SelectItem value="maquinaria">Alquiler de maquinaria</SelectItem>
+                    <SelectItem value="planta">Construcción de planta</SelectItem>
+                    <SelectItem value="residuos">Gestión de residuos</SelectItem>
+                    <SelectItem value="asesoria">Asesoría empresarial</SelectItem>
+                    <SelectItem value="mantenimiento">Mantenimiento</SelectItem>
                     <SelectItem value="otro">Otro</SelectItem>
                   </SelectContent>
                 </Select>
@@ -184,11 +153,7 @@ export default function ContactForm() {
             <FormItem>
               <FormLabel>Asunto</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Asunto del mensaje"
-                  className="bg-white/50 dark:bg-gray-800/50 input-focus-effect"
-                  {...field}
-                />
+                <Input placeholder="Asunto del mensaje" className="bg-white/50 dark:bg-gray-800/50" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -203,7 +168,7 @@ export default function ContactForm() {
               <FormControl>
                 <Textarea
                   placeholder="Escriba su mensaje aquí"
-                  className="min-h-[120px] bg-white/50 dark:bg-gray-800/50 input-focus-effect"
+                  className="min-h-[120px] bg-white/50 dark:bg-gray-800/50"
                   {...field}
                 />
               </FormControl>
@@ -211,7 +176,7 @@ export default function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full btn-gradient shadow-blue btn-shine" disabled={isSubmitting}>
+        <Button type="submit" className="w-full btn-gradient shadow-blue" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -221,10 +186,8 @@ export default function ContactForm() {
             "Enviar Mensaje"
           )}
         </Button>
-        <p className="text-xs text-center text-muted-foreground mt-2">
-          Su mensaje será enviado a sngservimax@gmail.com
-        </p>
       </form>
     </Form>
   )
 }
+
