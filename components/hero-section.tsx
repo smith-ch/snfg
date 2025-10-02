@@ -1,434 +1,395 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { ChevronLeft, ChevronRight, Clock, Users, TrendingUp, ChevronDown } from "lucide-react"
+import { useEffect, useState, useRef } from "react"
+import Link from "next/link"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-
-const slides = [
-  {
-    title: "Laboratorio de Concreto",
-    subtitle: "Análisis y control de calidad certificado",
-    description: "Servicios profesionales de ensayo y análisis de materiales de construcción",
-    image: "/images/concrete-lab.jpg",
-    cta: "Conocer Más",
-    ctaLink: "/servicios#laboratorio",
-  },
-  {
-    title: "Servicios Financieros",
-    subtitle: "Soluciones integrales para su empresa",
-    description: "Asesoría y gestión financiera especializada en el sector construcción",
-    image: "/images/financial-services.jpg",
-    cta: "Contactar",
-    ctaLink: "/contacto",
-  },
-  {
-    title: "Excelencia en Cada Proyecto",
-    subtitle: "Compromiso con la calidad",
-    description: "Más de 50 proyectos completados con los más altos estándares",
-    image: "/images/construction-generic.jpg",
-    cta: "Ver Proyectos",
-    ctaLink: "/nosotros",
-  },
-]
+import { cn } from "@/lib/utils"
+import { ArrowRight, ChevronDown, Sparkles, Zap } from "lucide-react"
+import ImageWithFallback from "@/components/image-with-fallback"
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const intervalRef = useRef<NodeJS.Timeout>()
+  const containerRef = useRef(null)
+  const servicesRef = useRef<HTMLElement | null>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  })
+
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9])
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200])
+
+  const smoothY = useSpring(y, { stiffness: 100, damping: 30 })
 
   useEffect(() => {
-    if (isAutoPlaying) {
-      intervalRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length)
-      }, 5000)
-    }
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [isAutoPlaying])
+    servicesRef.current = document.getElementById("services-section")
+  }, [])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
-
     window.addEventListener("mousemove", handleMouseMove)
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
-    setIsAutoPlaying(false)
-  }
+  const slides = [
+    {
+      title: "Soluciones de construcción innovadoras",
+      description: "Transformamos ideas en estructuras sólidas y duraderas",
+      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1920&auto=format&fit=crop",
+      cta: "Nuestros Servicios",
+      link: "/servicios",
+    },
+    {
+      title: "Expertos en impermeabilización",
+      description: "Protegemos sus estructuras contra la humedad y filtraciones",
+      image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=1920&auto=format&fit=crop",
+      cta: "Solicitar Presupuesto",
+      link: "/contacto#formulario",
+    },
+    {
+      title: "Gestión integral de proyectos",
+      description: "Desde el diseño hasta la ejecución, nos encargamos de todo",
+      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1920&auto=format&fit=crop",
+      cta: "Conocer Más",
+      link: "/nosotros",
+    },
+  ]
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-    setIsAutoPlaying(false)
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [slides.length])
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index)
-    setIsAutoPlaying(false)
+  const scrollToServices = () => {
+    if (servicesRef.current) {
+      servicesRef.current.scrollIntoView({ behavior: "smooth" })
+    }
   }
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Animated Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Expanding Waves from top-left */}
-        {[...Array(8)].map((_, i) => (
+    <motion.section
+      ref={containerRef}
+      style={{ opacity, scale }}
+      className="relative h-[90vh] md:h-screen w-full overflow-hidden"
+    >
+      {/* Partículas animadas más dramáticas - 40 partículas */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {[...Array(40)].map((_, i) => (
           <motion.div
-            key={`wave-tl-${i}`}
-            className="absolute -top-1/4 -left-1/4 rounded-full"
+            key={i}
+            className={cn("absolute rounded-full", i % 2 === 0 ? "bg-[#1a3a52]/30" : "bg-[#ff6b35]/30")}
             style={{
-              width: `${(i + 1) * 200}px`,
-              height: `${(i + 1) * 200}px`,
-              background: `radial-gradient(circle, ${i % 2 === 0 ? "rgba(255,107,53,0.03)" : "rgba(74,144,226,0.03)"} 0%, transparent 70%)`,
-              border: `1px solid ${i % 2 === 0 ? "rgba(255,107,53,0.1)" : "rgba(74,144,226,0.1)"}`,
+              width: Math.random() * 12 + 4,
+              height: Math.random() * 12 + 4,
+            }}
+            initial={{
+              x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1920),
+              y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 1080),
             }}
             animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.6, 0.3],
+              x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1920),
+              y: Math.random() * (typeof window !== "undefined" ? window.innerHeight : 1080),
+              scale: [1, 2.5, 1],
+              opacity: [0.2, 0.9, 0.2],
             }}
             transition={{
-              duration: 8 + i * 2,
+              duration: Math.random() * 8 + 5,
               repeat: Number.POSITIVE_INFINITY,
-              delay: i * 0.5,
+              ease: "easeInOut",
             }}
           />
         ))}
+      </div>
 
-        {/* Expanding Waves from bottom-right */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={`wave-br-${i}`}
-            className="absolute -bottom-1/4 -right-1/4 rounded-full"
-            style={{
-              width: `${(i + 1) * 250}px`,
-              height: `${(i + 1) * 250}px`,
-              background: `radial-gradient(circle, ${i % 2 === 0 ? "rgba(74,144,226,0.03)" : "rgba(255,107,53,0.03)"} 0%, transparent 70%)`,
-              border: `1px solid ${i % 2 === 0 ? "rgba(74,144,226,0.1)" : "rgba(255,107,53,0.1)"}`,
-            }}
-            animate={{
-              scale: [1, 1.3, 1],
-              opacity: [0.2, 0.5, 0.2],
-            }}
-            transition={{
-              duration: 10 + i * 2,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: i * 0.7,
-            }}
-          />
-        ))}
+      {/* Mouse follower MEGA dramático */}
+      <motion.div
+        className="absolute w-[600px] h-[600px] rounded-full bg-[#ff6b35]/25 blur-3xl pointer-events-none z-0"
+        animate={{
+          x: mousePosition.x - 300,
+          y: mousePosition.y - 300,
+        }}
+        transition={{ type: "spring", stiffness: 30, damping: 15 }}
+      />
 
-        {/* Floating Bubbles with blur */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={`bubble-${i}`}
-            className="absolute rounded-full blur-xl"
-            style={{
-              width: `${60 + Math.random() * 100}px`,
-              height: `${60 + Math.random() * 100}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: `linear-gradient(135deg, ${i % 2 === 0 ? "rgba(255,107,53,0.15)" : "rgba(74,144,226,0.15)"}, ${i % 2 === 0 ? "rgba(255,160,122,0.1)" : "rgba(135,206,235,0.1)"})`,
-            }}
-            animate={{
-              y: [0, -100, 0],
-              x: [0, Math.random() * 50 - 25, 0],
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{
-              duration: 15 + Math.random() * 10,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
+      {/* Círculos decorativos MEGA animados */}
+      <motion.div
+        className="absolute -top-40 -right-40 w-[600px] h-[600px] border-8 border-[#1a3a52]/20 rounded-full z-0"
+        animate={{
+          scale: [1, 1.4, 1],
+          rotate: [0, 360],
+          opacity: [0.1, 0.4, 0.1],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "linear",
+        }}
+      />
+      <motion.div
+        className="absolute -bottom-40 -left-40 w-[600px] h-[600px] border-8 border-[#ff6b35]/20 rounded-full z-0"
+        animate={{
+          scale: [1.4, 1, 1.4],
+          rotate: [360, 0],
+          opacity: [0.4, 0.1, 0.4],
+        }}
+        transition={{
+          duration: 30,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "linear",
+        }}
+      />
 
-        {/* Twinkling Stars */}
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={`star-${i}`}
-            className="absolute w-1 h-1 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: i % 2 === 0 ? "#ff6b35" : "#4a90e2",
-              boxShadow: `0 0 4px ${i % 2 === 0 ? "#ff6b35" : "#4a90e2"}`,
-            }}
-            animate={{
-              opacity: [0, 1, 0],
-              scale: [0, 1.5, 0],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 3,
-            }}
-          />
-        ))}
-
-        {/* Mouse Follower */}
+      {/* Rayos de luz MUY dramáticos - 12 rayos */}
+      {[...Array(12)].map((_, i) => (
         <motion.div
-          className="absolute w-96 h-96 rounded-full pointer-events-none blur-3xl"
+          key={`ray-${i}`}
+          className="absolute top-0 left-1/2 w-2 bg-gradient-to-b from-[#ff6b35]/40 to-transparent"
           style={{
-            background:
-              "radial-gradient(circle, rgba(255,107,53,0.08) 0%, rgba(74,144,226,0.08) 50%, transparent 100%)",
+            height: "100%",
+            transformOrigin: "top center",
+            rotate: `${i * 30}deg`,
           }}
           animate={{
-            x: mousePosition.x - 192,
-            y: mousePosition.y - 192,
+            opacity: [0, 0.7, 0],
+            scaleY: [0.4, 1.2, 0.4],
           }}
           transition={{
-            type: "spring",
-            damping: 30,
-            stiffness: 100,
+            duration: 4,
+            repeat: Number.POSITIVE_INFINITY,
+            delay: i * 0.3,
           }}
         />
-      </div>
+      ))}
 
-      {/* Slide Content */}
-      <AnimatePresence mode="wait">
+      {/* Slides con parallax */}
+      {slides.map((slide, index) => (
         <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0"
+          key={`slide-${index}`}
+          className={cn(
+            "absolute inset-0 transition-opacity duration-1000",
+            currentSlide === index ? "opacity-100 z-10" : "opacity-0 z-0",
+          )}
+          style={{ y: currentSlide === index ? smoothY : 0 }}
         >
-          {/* Background Image with Overlay */}
-          <div className="absolute inset-0">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${slides[currentSlide].image})`,
-                filter: "brightness(0.4)",
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
-          </div>
-
-          {/* Content */}
-          <div className="relative h-full flex items-center">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-                className="max-w-3xl"
-              >
-                {/* Badge */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="mb-6"
-                >
-                  <Badge
-                    variant="secondary"
-                    className="text-sm px-4 py-2 bg-gradient-to-r from-orange-500/20 to-blue-500/20 border border-orange-500/30 backdrop-blur-sm"
-                  >
-                    <motion.span
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                      className="inline-block mr-2"
-                    >
-                      ✨
-                    </motion.span>
-                    Calidad Certificada
-                  </Badge>
-                </motion.div>
-
-                {/* Title with gradient animation */}
-                <motion.h1
-                  className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
-                  initial={{ opacity: 0, rotateX: -20 }}
-                  animate={{ opacity: 1, rotateX: 0 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                >
-                  <motion.span
-                    className="inline-block bg-gradient-to-r from-orange-400 via-orange-500 to-blue-400 bg-clip-text text-transparent"
-                    animate={{
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                    }}
-                    transition={{
-                      duration: 5,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: "linear",
-                    }}
-                    style={{
-                      backgroundSize: "200% 200%",
-                    }}
-                  >
-                    {slides[currentSlide].title.split(" ").map((word, i) => (
-                      <motion.span
-                        key={i}
-                        className="inline-block mr-3"
-                        whileHover={{
-                          scale: 1.1,
-                          color: "#ff6b35",
-                          textShadow: "0 0 20px rgba(255,107,53,0.5)",
-                        }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                      >
-                        {word}
-                      </motion.span>
-                    ))}
-                  </motion.span>
-                </motion.h1>
-
-                {/* Subtitle */}
-                <motion.p
-                  className="text-2xl md:text-3xl text-blue-200 mb-4 font-light"
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 }}
-                >
-                  {slides[currentSlide].subtitle}
-                </motion.p>
-
-                {/* Description */}
-                <motion.p
-                  className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
-                >
-                  {slides[currentSlide].description}
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1 }}
-                  className="flex flex-wrap gap-4"
-                >
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                  >
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-6 text-lg shadow-lg shadow-orange-500/50 transition-all duration-300"
-                      asChild
-                    >
-                      <a href={slides[currentSlide].ctaLink}>{slides[currentSlide].cta}</a>
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, delay: 0.2 }}
-                  >
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-2 border-blue-400/50 text-white hover:bg-blue-500/20 px-8 py-6 text-lg backdrop-blur-sm bg-transparent"
-                      asChild
-                    >
-                      <a href="/contacto">Contactar</a>
-                    </Button>
-                  </motion.div>
-                </motion.div>
-
-                {/* Stats with animated icons */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.2 }}
-                  className="mt-12 grid grid-cols-3 gap-6 max-w-2xl"
-                >
-                  {[
-                    { icon: Users, label: "Clientes", value: "+25", color: "from-orange-400 to-orange-600" },
-                    { icon: Clock, label: "Proyectos", value: "+50", color: "from-blue-400 to-blue-600" },
-                    { icon: TrendingUp, label: "Crecimiento", value: "100%", color: "from-orange-400 to-blue-400" },
-                  ].map((stat, i) => (
-                    <motion.div
-                      key={i}
-                      className="text-center bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10"
-                      whileHover={{ scale: 1.05, y: -5 }}
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, delay: i * 0.3 }}
-                    >
-                      <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, delay: i * 0.5 }}
-                      >
-                        <stat.icon
-                          className={`w-8 h-8 mx-auto mb-2 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}
-                        />
-                      </motion.div>
-                      <div
-                        className={`text-2xl font-bold bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}
-                      >
-                        {stat.value}
-                      </div>
-                      <div className="text-sm text-gray-400">{stat.label}</div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </motion.div>
-            </div>
-          </div>
+          <ImageWithFallback
+            src={slide.image || "/placeholder.svg"}
+            alt={slide.title}
+            fill
+            priority={index === 0}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
         </motion.div>
-      </AnimatePresence>
+      ))}
 
-      {/* Navigation Controls */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
-        <div className="flex items-center gap-4 bg-black/30 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevSlide}
-            className="text-white hover:text-orange-400 hover:bg-white/10"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </Button>
-
-          <div className="flex gap-2">
-            {slides.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? "w-8 bg-gradient-to-r from-orange-500 to-blue-500" : "w-2 bg-white/30"
-                }`}
-                animate={index === currentSlide ? { scale: [1, 1.2, 1] } : {}}
+      <div className="relative h-full flex items-center z-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl text-white">
+            <motion.div
+              key={`badge-${currentSlide}`}
+              initial={{ opacity: 0, x: -50, scale: 0.7 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.2, type: "spring", bounce: 0.5 }}
+              className="inline-block mb-4 px-3 py-1 border border-[#ff6b35]/50 rounded-full text-xs sm:text-sm font-medium bg-[#ff6b35]/10 backdrop-blur-sm"
+            >
+              <motion.span
+                animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                whileHover={{ scale: 1.5 }}
-              />
-            ))}
-          </div>
+                className="inline-flex items-center gap-2"
+              >
+                <motion.div
+                  animate={{ rotate: 360, scale: [1, 1.3, 1] }}
+                  transition={{
+                    rotate: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+                    scale: { duration: 1.5, repeat: Number.POSITIVE_INFINITY },
+                  }}
+                >
+                  <Sparkles className="w-4 h-4" />
+                </motion.div>
+                SNG SERVIMAX - Expertos en darte tus servicios en la más alta calidad
+                <motion.div
+                  animate={{
+                    scale: [1, 1.5, 1],
+                    rotate: [0, 180, 360],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                  }}
+                >
+                  <Zap className="w-4 h-4" />
+                </motion.div>
+              </motion.span>
+            </motion.div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextSlide}
-            className="text-white hover:text-orange-400 hover:bg-white/10"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </Button>
+            <motion.h1
+              key={`title-${currentSlide}`}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-md leading-tight"
+            >
+              {slides[currentSlide].title.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 30, rotateX: -90 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 + i * 0.12, type: "spring" }}
+                  whileHover={{
+                    scale: 1.15,
+                    color: "#ff6b35",
+                    y: -5,
+                    textShadow: "0 10px 20px rgba(255,107,53,0.5)",
+                  }}
+                  className="inline-block mr-2 cursor-pointer"
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.h1>
+
+            <motion.p
+              key={`desc-${currentSlide}`}
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.5, type: "spring" }}
+              className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-200 drop-shadow-md"
+            >
+              {slides[currentSlide].description}
+            </motion.p>
+
+            <motion.div
+              key={`buttons-${currentSlide}`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-wrap gap-3 md:gap-4"
+            >
+              <motion.div
+                whileHover={{ scale: 1.12, rotate: 3 }}
+                whileTap={{ scale: 0.93 }}
+                animate={{ y: [0, -8, 0] }}
+                transition={{ y: { duration: 2.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" } }}
+              >
+                <Button
+                  size="lg"
+                  className="relative overflow-hidden group text-sm md:text-base bg-gradient-to-r from-[#1a3a52] to-[#ff6b35] hover:from-[#ff6b35] hover:to-[#1a3a52] transition-all duration-500 shadow-2xl shadow-[#ff6b35]/50"
+                  asChild
+                >
+                  <Link href={slides[currentSlide].link} className="flex items-center gap-2">
+                    <motion.div
+                      className="absolute inset-0 bg-white/20"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "200%" }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <motion.span
+                      className="relative z-10"
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                    >
+                      {slides[currentSlide].cta}
+                    </motion.span>
+                    <motion.div
+                      animate={{
+                        x: [0, 6, 0],
+                        rotate: [0, 15, 0],
+                      }}
+                      transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                    >
+                      <ArrowRight size={16} className="relative z-10" />
+                    </motion.div>
+                  </Link>
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.12, rotate: -3 }}
+                whileTap={{ scale: 0.93 }}
+                animate={{ y: [0, 8, 0] }}
+                transition={{ y: { duration: 2.5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: 0.5 } }}
+              >
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-[#ff6b35]/30 hover:border-[#ff6b35] text-sm md:text-base transition-all duration-300 shadow-xl"
+                  asChild
+                >
+                  <Link href="/contacto#formulario">Contactar</Link>
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Slide indicators MEGA animados */}
+      <div className="absolute bottom-8 md:bottom-12 left-0 right-0 flex justify-center gap-2 z-20">
+        {slides.map((_, index) => (
+          <motion.button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={cn(
+              "h-2 md:h-3 rounded-full transition-all overflow-hidden relative",
+              currentSlide === index ? "w-6 md:w-8 bg-white" : "w-2 md:w-3 bg-white/50 hover:bg-white/80",
+            )}
+            whileHover={{ scale: 1.6 }}
+            whileTap={{ scale: 0.8 }}
+            animate={currentSlide === index ? { scale: [1, 1.3, 1] } : {}}
+            transition={currentSlide === index ? { duration: 1.5, repeat: Number.POSITIVE_INFINITY } : {}}
+            aria-label={`Ir a diapositiva ${index + 1}`}
+          >
+            {currentSlide === index && (
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-[#1a3a52] via-[#ff6b35] to-[#1a3a52]"
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{ duration: 5, ease: "linear" }}
+                style={{ backgroundSize: "200% 100%" }}
+              />
+            )}
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Scroll down button ULTRA animado */}
       <motion.div
-        className="absolute bottom-8 right-8 z-20"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+        className="absolute bottom-8 right-4 md:right-8 z-20"
+        animate={{
+          y: [0, 20, 0],
+          scale: [1, 1.15, 1],
+        }}
+        transition={{ duration: 2.5, repeat: Number.POSITIVE_INFINITY }}
       >
-        <div className="flex flex-col items-center gap-2 text-white/60">
-          <span className="text-sm">Scroll</span>
-          <ChevronDown className="w-5 h-5" />
-        </div>
+        <motion.div whileHover={{ scale: 1.3, rotate: 360 }} whileTap={{ scale: 0.85 }} transition={{ duration: 0.6 }}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full bg-white/10 backdrop-blur-sm border-white/20 hover:bg-[#ff6b35]/30 hover:border-[#ff6b35] w-8 h-8 md:w-10 md:h-10 relative overflow-hidden group transition-all duration-300 shadow-2xl shadow-[#ff6b35]/30"
+            onClick={scrollToServices}
+            aria-label="Desplazarse a la sección de servicios"
+          >
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-[#1a3a52] to-[#ff6b35]"
+              initial={{ scale: 0, opacity: 0 }}
+              whileHover={{ scale: 2, opacity: 0.3 }}
+              transition={{ duration: 0.4 }}
+            />
+            <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}>
+              <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-white relative z-10" />
+            </motion.div>
+          </Button>
+        </motion.div>
       </motion.div>
-    </section>
+    </motion.section>
   )
 }
