@@ -7,7 +7,7 @@ import { Award, Users, Briefcase, ThumbsUp } from "lucide-react"
 const stats = [
   {
     icon: Award,
-    value: 1,
+    value: 1.5,
     label: "Año de Experiencia",
     suffix: "",
     color: "from-blue-500 to-cyan-500",
@@ -15,7 +15,7 @@ const stats = [
   },
   {
     icon: Briefcase,
-    value: 50,
+    value: 30,
     label: "Proyectos Completados",
     suffix: "+",
     color: "from-[#ff6b35] to-orange-500",
@@ -23,7 +23,7 @@ const stats = [
   },
   {
     icon: Users,
-    value: 45,
+    value: 25,
     label: "Clientes Satisfechos",
     suffix: "+",
     color: "from-purple-500 to-pink-500",
