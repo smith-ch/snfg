@@ -1,538 +1,433 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronLeft, ChevronRight, Award, Users, TrendingUp, ChevronDown, Sparkles } from "lucide-react"
+import { ChevronLeft, ChevronRight, Clock, Users, TrendingUp, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import Image from "next/image"
+import { Badge } from "@/components/ui/badge"
 
 const slides = [
   {
-    id: 1,
-    image: "/images/housing-maintenance.jpg",
-    title: "Mantenimiento Profesional",
-    subtitle: "Servicios especializados de alta calidad",
-    cta: "Ver Servicios",
-    link: "/servicios",
-  },
-  {
-    id: 2,
-    image: "/images/concrete-lab.jpg",
     title: "Laboratorio de Concreto",
     subtitle: "Análisis y control de calidad certificado",
+    description: "Servicios profesionales de ensayo y análisis de materiales de construcción",
+    image: "/images/concrete-lab.jpg",
     cta: "Conocer Más",
-    link: "/servicios",
+    ctaLink: "/servicios#laboratorio",
   },
   {
-    id: 3,
-    image: "/images/financial-services.jpg",
     title: "Servicios Financieros",
-    subtitle: "Soluciones integrales para tu empresa",
+    subtitle: "Soluciones integrales para su empresa",
+    description: "Asesoría y gestión financiera especializada en el sector construcción",
+    image: "/images/financial-services.jpg",
     cta: "Contactar",
-    link: "/contacto",
+    ctaLink: "/contacto",
+  },
+  {
+    title: "Excelencia en Cada Proyecto",
+    subtitle: "Compromiso con la calidad",
+    description: "Más de 50 proyectos completados con los más altos estándares",
+    image: "/images/construction-generic.jpg",
+    cta: "Ver Proyectos",
+    ctaLink: "/nosotros",
   },
 ]
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const intervalRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
+    if (isAutoPlaying) {
+      intervalRef.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length)
+      }, 5000)
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [isAutoPlaying])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
+
     window.addEventListener("mousemove", handleMouseMove)
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length)
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+    setIsAutoPlaying(false)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+    setIsAutoPlaying(false)
+  }
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index)
+    setIsAutoPlaying(false)
+  }
 
   return (
-    <section className="relative h-screen overflow-hidden bg-gradient-to-br from-[#0f1729] via-[#1a2f4a] to-[#0a1420]">
-      {/* Ondas concéntricas elegantes */}
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={`wave-${i}`}
-          className="absolute rounded-full border opacity-20"
-          style={{
-            width: 100 + i * 150,
-            height: 100 + i * 150,
-            left: "20%",
-            top: "30%",
-            borderColor: i % 2 === 0 ? "#ff6b35" : "#4a90e2",
-            borderWidth: 2,
-          }}
-          animate={{
-            scale: [1, 1.5, 1],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: 6 + i * 0.5,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-            delay: i * 0.3,
-          }}
-        />
-      ))}
+    <section className="relative h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Animated Background Effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Expanding Waves from top-left */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={`wave-tl-${i}`}
+            className="absolute -top-1/4 -left-1/4 rounded-full"
+            style={{
+              width: `${(i + 1) * 200}px`,
+              height: `${(i + 1) * 200}px`,
+              background: `radial-gradient(circle, ${i % 2 === 0 ? "rgba(255,107,53,0.03)" : "rgba(74,144,226,0.03)"} 0%, transparent 70%)`,
+              border: `1px solid ${i % 2 === 0 ? "rgba(255,107,53,0.1)" : "rgba(74,144,226,0.1)"}`,
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 8 + i * 2,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 0.5,
+            }}
+          />
+        ))}
 
-      {/* Ondas desde otra esquina */}
-      {[...Array(6)].map((_, i) => (
-        <motion.div
-          key={`wave2-${i}`}
-          className="absolute rounded-full border opacity-15"
-          style={{
-            width: 80 + i * 120,
-            height: 80 + i * 120,
-            right: "15%",
-            bottom: "25%",
-            borderColor: i % 2 === 0 ? "#4a90e2" : "#ff6b35",
-            borderWidth: 2,
-          }}
-          animate={{
-            scale: [1, 1.4, 1],
-            opacity: [0.15, 0.4, 0.15],
-          }}
-          transition={{
-            duration: 5 + i * 0.4,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-            delay: i * 0.4,
-          }}
-        />
-      ))}
+        {/* Expanding Waves from bottom-right */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={`wave-br-${i}`}
+            className="absolute -bottom-1/4 -right-1/4 rounded-full"
+            style={{
+              width: `${(i + 1) * 250}px`,
+              height: `${(i + 1) * 250}px`,
+              background: `radial-gradient(circle, ${i % 2 === 0 ? "rgba(74,144,226,0.03)" : "rgba(255,107,53,0.03)"} 0%, transparent 70%)`,
+              border: `1px solid ${i % 2 === 0 ? "rgba(74,144,226,0.1)" : "rgba(255,107,53,0.1)"}`,
+            }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+              duration: 10 + i * 2,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: i * 0.7,
+            }}
+          />
+        ))}
 
-      {/* Burbujas flotantes grandes y elegantes */}
-      {[...Array(12)].map((_, i) => (
+        {/* Floating Bubbles with blur */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={`bubble-${i}`}
+            className="absolute rounded-full blur-xl"
+            style={{
+              width: `${60 + Math.random() * 100}px`,
+              height: `${60 + Math.random() * 100}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: `linear-gradient(135deg, ${i % 2 === 0 ? "rgba(255,107,53,0.15)" : "rgba(74,144,226,0.15)"}, ${i % 2 === 0 ? "rgba(255,160,122,0.1)" : "rgba(135,206,235,0.1)"})`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              x: [0, Math.random() * 50 - 25, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 15 + Math.random() * 10,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+
+        {/* Twinkling Stars */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={`star-${i}`}
+            className="absolute w-1 h-1 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: i % 2 === 0 ? "#ff6b35" : "#4a90e2",
+              boxShadow: `0 0 4px ${i % 2 === 0 ? "#ff6b35" : "#4a90e2"}`,
+            }}
+            animate={{
+              opacity: [0, 1, 0],
+              scale: [0, 1.5, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: Math.random() * 3,
+            }}
+          />
+        ))}
+
+        {/* Mouse Follower */}
         <motion.div
-          key={`bubble-${i}`}
-          className="absolute rounded-full blur-xl"
+          className="absolute w-96 h-96 rounded-full pointer-events-none blur-3xl"
           style={{
-            width: Math.random() * 100 + 80,
-            height: Math.random() * 100 + 80,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
             background:
-              i % 2 === 0
-                ? "radial-gradient(circle, rgba(255,107,53,0.3) 0%, transparent 70%)"
-                : "radial-gradient(circle, rgba(74,144,226,0.3) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(255,107,53,0.08) 0%, rgba(74,144,226,0.08) 50%, transparent 100%)",
           }}
           animate={{
-            y: [0, -40, 0],
-            x: [0, Math.random() * 30 - 15, 0],
-            scale: [1, 1.2, 1],
-            opacity: [0.4, 0.7, 0.4],
+            x: mousePosition.x - 192,
+            y: mousePosition.y - 192,
           }}
           transition={{
-            duration: 8 + Math.random() * 4,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-            delay: Math.random() * 3,
+            type: "spring",
+            damping: 30,
+            stiffness: 100,
           }}
         />
-      ))}
+      </div>
 
-      {/* Mouse follower con gradiente */}
-      <motion.div
-        className="fixed w-[500px] h-[500px] pointer-events-none z-10"
-        animate={{
-          x: mousePosition.x - 250,
-          y: mousePosition.y - 250,
-        }}
-        transition={{ type: "spring", damping: 40, stiffness: 150 }}
-      >
-        <div className="w-full h-full bg-gradient-to-br from-[#ff6b35]/30 via-[#ffa07a]/20 to-[#4a90e2]/30 rounded-full blur-3xl" />
-      </motion.div>
-
-      {/* Ondas animadas de fondo */}
-      <motion.div
-        className="absolute top-0 left-0 w-full h-full opacity-30"
-        animate={{
-          backgroundPosition: ["0% 0%", "100% 100%"],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "linear",
-        }}
-        style={{
-          background:
-            "radial-gradient(circle at 20% 50%, #ff6b35 0%, transparent 50%), radial-gradient(circle at 80% 80%, #4a90e2 0%, transparent 50%)",
-          backgroundSize: "200% 200%",
-        }}
-      />
-
-      {/* Círculos decorativos con gradiente animado */}
-      <motion.div
-        className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full opacity-20"
-        style={{
-          background: "linear-gradient(135deg, #ff6b35, #4a90e2)",
-        }}
-        animate={{
-          rotate: 360,
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          rotate: { duration: 30, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-        }}
-      />
-      <motion.div
-        className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full opacity-20"
-        style={{
-          background: "linear-gradient(225deg, #4a90e2, #ff6b35)",
-        }}
-        animate={{
-          rotate: -360,
-          scale: [1.2, 1, 1.2],
-        }}
-        transition={{
-          rotate: { duration: 25, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-          scale: { duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-        }}
-      />
-
-      {/* Estrellas parpadeantes */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={`star-${i}`}
-          className="absolute w-2 h-2 bg-white rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            opacity: [0.2, 1, 0.2],
-            scale: [0.5, 1.2, 0.5],
-          }}
-          transition={{
-            duration: 2 + Math.random() * 2,
-            repeat: Number.POSITIVE_INFINITY,
-            delay: Math.random() * 2,
-          }}
-        />
-      ))}
-
-      {/* Slider de imágenes */}
+      {/* Slide Content */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
           className="absolute inset-0"
         >
-          <Image
-            src={slides[currentSlide].image || "/placeholder.svg"}
-            alt={slides[currentSlide].title}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${slides[currentSlide].image})`,
+                filter: "brightness(0.4)",
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+          </div>
 
-      {/* Contenido del hero */}
-      <div className="relative z-20 h-full flex items-center">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl">
-            <AnimatePresence mode="wait">
+          {/* Content */}
+          <div className="relative h-full flex items-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -50 }}
-                transition={{ duration: 0.6 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                className="max-w-3xl"
               >
-                {/* Badge con animación de brillo */}
+                {/* Badge */}
                 <motion.div
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-6 border"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(255,107,53,0.2), rgba(74,144,226,0.2))",
-                    borderImage: "linear-gradient(135deg, #ff6b35, #4a90e2) 1",
-                  }}
-                  animate={{
-                    boxShadow: [
-                      "0 0 20px rgba(255,107,53,0.4)",
-                      "0 0 40px rgba(74,144,226,0.6)",
-                      "0 0 20px rgba(255,107,53,0.4)",
-                    ],
-                  }}
-                  transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="mb-6"
                 >
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                  <Badge
+                    variant="secondary"
+                    className="text-sm px-4 py-2 bg-gradient-to-r from-orange-500/20 to-blue-500/20 border border-orange-500/30 backdrop-blur-sm"
                   >
-                    <Sparkles className="w-5 h-5 text-[#ff6b35]" />
-                  </motion.div>
-                  <span className="text-white font-semibold">SNG SERVIMAX - Calidad Garantizada</span>
-                  <motion.div
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                  >
-                    <Award className="w-5 h-5 text-[#4a90e2]" />
-                  </motion.div>
+                    <motion.span
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                      className="inline-block mr-2"
+                    >
+                      ✨
+                    </motion.span>
+                    Calidad Certificada
+                  </Badge>
                 </motion.div>
 
-                {/* Título con gradiente animado */}
-                <motion.h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                  {slides[currentSlide].title.split(" ").map((word, i) => (
-                    <motion.span
-                      key={i}
-                      className="inline-block mr-4"
-                      initial={{ opacity: 0, y: 50, rotateX: -30 }}
-                      animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                      transition={{ delay: i * 0.15, duration: 0.6, type: "spring" }}
-                      whileHover={{
-                        scale: 1.1,
-                        y: -5,
-                      }}
-                      style={{
-                        background: "linear-gradient(135deg, #ffffff, #ff6b35, #4a90e2)",
-                        backgroundSize: "200% 200%",
-                        backgroundClip: "text",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        textShadow: "0 4px 20px rgba(0,0,0,0.5)",
-                      }}
-                    >
+                {/* Title with gradient animation */}
+                <motion.h1
+                  className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+                  initial={{ opacity: 0, rotateX: -20 }}
+                  animate={{ opacity: 1, rotateX: 0 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                >
+                  <motion.span
+                    className="inline-block bg-gradient-to-r from-orange-400 via-orange-500 to-blue-400 bg-clip-text text-transparent"
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{
+                      duration: 5,
+                      repeat: Number.POSITIVE_INFINITY,
+                      ease: "linear",
+                    }}
+                    style={{
+                      backgroundSize: "200% 200%",
+                    }}
+                  >
+                    {slides[currentSlide].title.split(" ").map((word, i) => (
                       <motion.span
-                        animate={{
-                          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                        key={i}
+                        className="inline-block mr-3"
+                        whileHover={{
+                          scale: 1.1,
+                          color: "#ff6b35",
+                          textShadow: "0 0 20px rgba(255,107,53,0.5)",
                         }}
-                        transition={{
-                          duration: 5,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: "linear",
-                        }}
-                        style={{
-                          display: "inline-block",
-                          background: "linear-gradient(135deg, #ffffff, #ff6b35, #4a90e2, #ffffff)",
-                          backgroundSize: "200% 200%",
-                          backgroundClip: "text",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                        }}
+                        transition={{ type: "spring", stiffness: 300 }}
                       >
                         {word}
                       </motion.span>
-                    </motion.span>
-                  ))}
+                    ))}
+                  </motion.span>
                 </motion.h1>
 
+                {/* Subtitle */}
                 <motion.p
-                  className="text-xl md:text-2xl text-gray-200 mb-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
+                  className="text-2xl md:text-3xl text-blue-200 mb-4 font-light"
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 }}
                 >
                   {slides[currentSlide].subtitle}
                 </motion.p>
 
-                {/* Botones con gradiente animado */}
-                <div className="flex flex-wrap gap-4">
+                {/* Description */}
+                <motion.p
+                  className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  {slides[currentSlide].description}
+                </motion.p>
+
+                {/* CTA Buttons */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 }}
+                  className="flex flex-wrap gap-4"
+                >
                   <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 2.5, repeat: Number.POSITIVE_INFINITY }}
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                   >
                     <Button
-                      asChild
                       size="lg"
-                      className="px-8 py-6 text-lg font-semibold rounded-full shadow-2xl relative overflow-hidden group border-0"
-                      style={{
-                        background: "linear-gradient(135deg, #ff6b35, #ffa07a)",
-                      }}
+                      className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-6 text-lg shadow-lg shadow-orange-500/50 transition-all duration-300"
+                      asChild
                     >
-                      <Link href={slides[currentSlide].link} className="relative z-10">
-                        <motion.div
-                          className="absolute inset-0"
-                          style={{
-                            background: "linear-gradient(135deg, #ffa07a, #ff6b35)",
-                          }}
-                          initial={{ x: "-100%" }}
-                          whileHover={{ x: 0 }}
-                          transition={{ duration: 0.3 }}
-                        />
-                        <span className="relative z-10 text-white">{slides[currentSlide].cta}</span>
-                      </Link>
+                      <a href={slides[currentSlide].ctaLink}>{slides[currentSlide].cta}</a>
                     </Button>
                   </motion.div>
                   <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 2.5, delay: 0.3, repeat: Number.POSITIVE_INFINITY }}
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, delay: 0.2 }}
                   >
                     <Button
-                      asChild
                       size="lg"
                       variant="outline"
-                      className="px-8 py-6 text-lg font-semibold rounded-full backdrop-blur-sm border-2 text-white bg-transparent"
-                      style={{
-                        borderImage: "linear-gradient(135deg, #ff6b35, #4a90e2) 1",
-                        background: "rgba(255,255,255,0.05)",
-                      }}
+                      className="border-2 border-blue-400/50 text-white hover:bg-blue-500/20 px-8 py-6 text-lg backdrop-blur-sm bg-transparent"
+                      asChild
                     >
-                      <Link href="/contacto">Contactar</Link>
+                      <a href="/contacto">Contactar</a>
                     </Button>
                   </motion.div>
-                </div>
+                </motion.div>
 
-                {/* Stats con gradiente */}
+                {/* Stats with animated icons */}
                 <motion.div
-                  className="mt-12 grid grid-cols-3 gap-6"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
+                  transition={{ delay: 1.2 }}
+                  className="mt-12 grid grid-cols-3 gap-6 max-w-2xl"
                 >
                   {[
-                    { icon: Users, label: "Clientes Satisfechos", value: "+25" },
-                    { icon: Award, label: "Proyectos", value: "+50" },
-                    { icon: TrendingUp, label: "Crecimiento", value: "100%" },
+                    { icon: Users, label: "Clientes", value: "+25", color: "from-orange-400 to-orange-600" },
+                    { icon: Clock, label: "Proyectos", value: "+50", color: "from-blue-400 to-blue-600" },
+                    { icon: TrendingUp, label: "Crecimiento", value: "100%", color: "from-orange-400 to-blue-400" },
                   ].map((stat, i) => (
                     <motion.div
                       key={i}
-                      className="text-center"
-                      whileHover={{ scale: 1.1, y: -5 }}
+                      className="text-center bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10"
+                      whileHover={{ scale: 1.05, y: -5 }}
                       animate={{ y: [0, -5, 0] }}
-                      transition={{
-                        y: { duration: 2.5, delay: i * 0.2, repeat: Number.POSITIVE_INFINITY },
-                      }}
+                      transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, delay: i * 0.3 }}
                     >
                       <motion.div
-                        className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-3 relative overflow-hidden"
-                        style={{
-                          background: "linear-gradient(135deg, rgba(255,107,53,0.2), rgba(74,144,226,0.2))",
-                          backdropFilter: "blur(10px)",
-                        }}
                         animate={{ rotate: [0, 360] }}
-                        transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                        transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, delay: i * 0.5 }}
                       >
-                        <motion.div
-                          className="absolute inset-0"
-                          style={{
-                            background: "linear-gradient(135deg, #ff6b35, #4a90e2)",
-                            opacity: 0.3,
-                          }}
-                          animate={{
-                            rotate: [0, -360],
-                          }}
-                          transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                        <stat.icon
+                          className={`w-8 h-8 mx-auto mb-2 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}
                         />
-                        <stat.icon className="w-7 h-7 text-white relative z-10" />
                       </motion.div>
-                      <motion.div
-                        className="text-3xl font-bold mb-1"
-                        style={{
-                          background: "linear-gradient(135deg, #ff6b35, #4a90e2)",
-                          backgroundClip: "text",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                        }}
-                        animate={{
-                          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Number.POSITIVE_INFINITY,
-                        }}
+                      <div
+                        className={`text-2xl font-bold bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}
                       >
                         {stat.value}
-                      </motion.div>
-                      <div className="text-sm text-gray-300">{stat.label}</div>
+                      </div>
+                      <div className="text-sm text-gray-400">{stat.label}</div>
                     </motion.div>
                   ))}
                 </motion.div>
               </motion.div>
-            </AnimatePresence>
+            </div>
           </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Navigation Controls */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+        <div className="flex items-center gap-4 bg-black/30 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={prevSlide}
+            className="text-white hover:text-orange-400 hover:bg-white/10"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </Button>
+
+          <div className="flex gap-2">
+            {slides.map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide ? "w-8 bg-gradient-to-r from-orange-500 to-blue-500" : "w-2 bg-white/30"
+                }`}
+                animate={index === currentSlide ? { scale: [1, 1.2, 1] } : {}}
+                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                whileHover={{ scale: 1.5 }}
+              />
+            ))}
+          </div>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={nextSlide}
+            className="text-white hover:text-orange-400 hover:bg-white/10"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </Button>
         </div>
       </div>
 
-      {/* Controles del slider */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={prevSlide}
-          className="backdrop-blur-sm text-white rounded-full hover:scale-110 transition-transform"
-          style={{
-            background: "linear-gradient(135deg, rgba(255,107,53,0.2), rgba(74,144,226,0.2))",
-          }}
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </Button>
-
-        <div className="flex gap-2">
-          {slides.map((_, index) => (
-            <motion.button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className="rounded-full transition-all"
-              style={{
-                width: index === currentSlide ? 32 : 12,
-                height: 12,
-                background:
-                  index === currentSlide ? "linear-gradient(135deg, #ff6b35, #4a90e2)" : "rgba(255,255,255,0.5)",
-              }}
-              animate={
-                index === currentSlide
-                  ? {
-                      boxShadow: [
-                        "0 0 10px rgba(255,107,53,0.5)",
-                        "0 0 20px rgba(74,144,226,0.8)",
-                        "0 0 10px rgba(255,107,53,0.5)",
-                      ],
-                    }
-                  : {}
-              }
-              transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
-            />
-          ))}
-        </div>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={nextSlide}
-          className="backdrop-blur-sm text-white rounded-full hover:scale-110 transition-transform"
-          style={{
-            background: "linear-gradient(135deg, rgba(255,107,53,0.2), rgba(74,144,226,0.2))",
-          }}
-        >
-          <ChevronRight className="w-6 h-6" />
-        </Button>
-      </div>
-
-      {/* Indicador de scroll con gradiente */}
+      {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-8 z-30 flex flex-col items-center gap-2"
+        className="absolute bottom-8 right-8 z-20"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
       >
-        <span className="text-white text-sm font-semibold">Scroll</span>
-        <motion.div
-          animate={{
-            background: [
-              "linear-gradient(180deg, #ff6b35, #4a90e2)",
-              "linear-gradient(180deg, #4a90e2, #ff6b35)",
-              "linear-gradient(180deg, #ff6b35, #4a90e2)",
-            ],
-          }}
-          transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY }}
-          className="p-2 rounded-full"
-        >
-          <ChevronDown className="w-6 h-6 text-white" />
-        </motion.div>
+        <div className="flex flex-col items-center gap-2 text-white/60">
+          <span className="text-sm">Scroll</span>
+          <ChevronDown className="w-5 h-5" />
+        </div>
       </motion.div>
     </section>
   )
