@@ -12,24 +12,12 @@ const nextConfig = {
       'plus.unsplash.com',
       'source.unsplash.com',
       'unsplash.com',
-      'images.pexels.com',
-      'pexels.com',
-      'picsum.photos',
-      'loremflickr.com',
-      'placekitten.com',
-      'placeimg.com',
-      'placeholdit.imgix.net',
-      'via.placeholder.com',
-      'dummyimage.com',
-      'cloudinary.com',
-      'res.cloudinary.com'
+      'blob.v0.app',
     ],
-    unoptimized: true,
+    unoptimized: false,
   },
   experimental: {
-    webpackBuildWorker: true,
-    parallelServerBuildTraces: true,
-    parallelServerCompiles: true,
+    optimizeCss: true,
   },
 }
 
