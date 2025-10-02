@@ -214,7 +214,7 @@ export default function ServiceCategories() {
                     animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
-                    <Card className="h-full hover:shadow-lg transition-shadow border-none bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+                    <Card className="h-full card-glass hover:shadow-lg transition-shadow border-none">
                       <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                         <Image
                           src={service.image || "/placeholder.svg"}
@@ -261,4 +261,3 @@ export default function ServiceCategories() {
     </div>
   )
 }
-

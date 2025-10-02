@@ -1,39 +1,40 @@
 "use client"
 
 import { useRef, useState } from "react"
-import Image from "next/image"
 import { motion, useInView, AnimatePresence } from "framer-motion"
-import { Star, ArrowLeft, ArrowRight, Quote } from "lucide-react"
+import { Star, ArrowLeft, ArrowRight, Quote, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const testimonials = [
   {
-    name: "Carlos Rodríguez",
-    position: "Director de Proyectos, Constructora XYZ",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop",
+    name: "Nora León",
+    position: "Agente de Remesas y Cambio, Capla S.A.",
     stars: 5,
-    text: "SNG SERVIMAX ha sido un socio excepcional en nuestros proyectos. Su profesionalismo y calidad de trabajo son incomparables. Recomendaría sus servicios sin dudarlo.",
+    text: "Excelente trabajo con el mantenimiento y las colocaciones. Los muchachos de SNG son responsables y atentos. Ya llevamos varios meses trabajando juntos y todo ha salido perfecto.",
   },
   {
-    name: "María González",
-    position: "Gerente de Operaciones, Inmobiliaria ABC",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop",
+    name: "Alberto Gaforio",
+    position: "Fideicomiso Ciudad del Sol",
     stars: 5,
-    text: "Hemos trabajado con SNG SERVIMAX en múltiples proyectos y siempre han superado nuestras expectativas. Su atención al detalle y compromiso con la calidad son excepcionales.",
+    text: "El servicio de mantenimiento que nos brindan es de primera. Siempre atentos a los detalles y muy profesionales. La verdad que nos han facilitado mucho el trabajo.",
   },
   {
-    name: "Juan Pérez",
-    position: "Propietario, Edificio Residencial",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
-    stars: 4,
-    text: "Contraté a SNG SERVIMAX para el mantenimiento de mi edificio y quedé muy satisfecho con los resultados. El trabajo fue realizado de manera eficiente y profesional.",
+    name: "Carmen García",
+    position: "Pylsa Dominicana",
+    stars: 5,
+    text: "Quedamos muy satisfechos con el mantenimiento que nos realizaron. Son serios, puntuales y el precio es justo. Sin duda seguiremos contando con ellos para futuros proyectos.",
   },
   {
-    name: "Ana Martínez",
-    position: "Arquitecta, Estudio de Arquitectura",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
+    name: "Ing. Paula Gómez",
+    position: "Fideicomiso Garden City, Punta Cana",
     stars: 5,
-    text: "Como arquitecta, valoro mucho la precisión y calidad en la ejecución de mis diseños. SNG SERVIMAX ha sido un colaborador excepcional, entendiendo perfectamente mis visiones y materializándolas con gran profesionalismo.",
+    text: "Las pruebas de hormigón que nos hicieron fueron impecables. Muy profesionales y con equipos de calidad. Recomiendo sus servicios completamente.",
+  },
+  {
+    name: "Solomon",
+    position: "Cliente Comercial",
+    stars: 5,
+    text: "Llevo trabajando con SNG desde que empezaron y la verdad es que son de lo mejor. Tanto en mantenimiento como en colocación, el trabajo siempre es excelente. 100% recomendados.",
   },
 ]
 
@@ -52,17 +53,16 @@ export default function TestimonialsSection() {
 
   return (
     <section ref={ref} className="py-24 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-blue-500/5 -z-10"></div>
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent z-0"></div>
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-0"></div>
+      {/* Background - solo colores de la marca */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" />
 
-      {/* Decorative quotes */}
+      {/* Decorative quotes flotantes */}
       <motion.div
-        className="absolute top-20 left-10 opacity-10 z-0"
+        className="absolute top-20 left-10 opacity-5"
         animate={{
-          scale: [1, 1.1, 1],
-          rotate: [-5, 0, -5],
+          scale: [1, 1.2, 1],
+          rotate: [-10, 0, -10],
+          y: [0, -20, 0],
         }}
         transition={{
           duration: 8,
@@ -70,14 +70,15 @@ export default function TestimonialsSection() {
           ease: "easeInOut",
         }}
       >
-        <Quote className="h-32 w-32 text-primary" />
+        <Quote className="h-32 w-32 text-[#1a3a52]" />
       </motion.div>
 
       <motion.div
-        className="absolute bottom-20 right-10 opacity-10 z-0"
+        className="absolute bottom-20 right-10 opacity-5"
         animate={{
-          scale: [1, 1.1, 1],
-          rotate: [5, 0, 5],
+          scale: [1, 1.2, 1],
+          rotate: [10, 0, 10],
+          y: [0, 20, 0],
         }}
         transition={{
           duration: 8,
@@ -85,105 +86,189 @@ export default function TestimonialsSection() {
           ease: "easeInOut",
         }}
       >
-        <Quote className="h-32 w-32 text-primary" />
+        <Quote className="h-32 w-32 text-[#ff6b35]" />
       </motion.div>
+
+      {/* Círculos animados - solo colores de la marca */}
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 300 + 100,
+            height: Math.random() * 300 + 100,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            background: `radial-gradient(circle, ${i % 2 === 0 ? "rgba(26, 58, 82, 0.03)" : "rgba(255, 107, 53, 0.03)"} 0%, transparent 70%)`,
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, Math.random() * 50 - 25, 0],
+            y: [0, Math.random() * 50 - 25, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-block px-3 py-1 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
+            transition={{ duration: 0.8, type: "spring" }}
+            className="inline-block px-3 py-1 bg-gradient-to-r from-[#1a3a52]/10 to-[#ff6b35]/10 rounded-full text-[#1a3a52] dark:text-white text-sm font-medium mb-4"
+          >
             TESTIMONIOS
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-heading">Lo Que Dicen Nuestros Clientes</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#1a3a52] to-[#ff6b35] bg-clip-text text-transparent"
+          >
+            Lo Que Dicen Nuestros Clientes
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+          >
             La satisfacción de nuestros clientes es nuestra mayor recompensa
-          </p>
+          </motion.p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="relative bg-white/80 dark:bg-gray-800/5 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-xl">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl p-8 md:p-12 rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50"
+          >
             {/* Large quote mark */}
-            <div className="absolute top-6 left-6 opacity-10">
-              <Quote className="h-16 w-16 text-primary" />
-            </div>
+            <motion.div
+              className="absolute top-6 left-6 opacity-5"
+              animate={{
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Number.POSITIVE_INFINITY,
+              }}
+            >
+              <Quote className="h-16 w-16 text-[#1a3a52]" />
+            </motion.div>
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={`testimonial-${currentTestimonial}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0, x: 100, rotateY: -15 }}
+                animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                exit={{ opacity: 0, x: -100, rotateY: 15 }}
+                transition={{ duration: 0.6, type: "spring" }}
                 className="relative z-10"
               >
                 <div className="flex items-center gap-2 mb-6">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
+                    <motion.div
                       key={i}
-                      className={`h-5 w-5 ${
-                        i < testimonials[currentTestimonial].stars
-                          ? "text-yellow-500 fill-yellow-500"
-                          : "text-muted-foreground"
-                      }`}
-                    />
+                      initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: i * 0.1,
+                        type: "spring",
+                        stiffness: 200,
+                      }}
+                    >
+                      <Star
+                        className={`h-6 w-6 ${
+                          i < testimonials[currentTestimonial].stars
+                            ? "text-[#ff6b35] fill-[#ff6b35]"
+                            : "text-muted-foreground"
+                        }`}
+                      />
+                    </motion.div>
                   ))}
                 </div>
 
-                <p className="text-xl md:text-2xl italic mb-8 text-muted-foreground">
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="text-xl md:text-2xl italic mb-8 text-muted-foreground leading-relaxed"
+                >
                   "{testimonials[currentTestimonial].text}"
-                </p>
+                </motion.p>
 
-                <div className="flex items-center gap-4">
-                  <div className="relative h-16 w-16 rounded-full overflow-hidden border-2 border-primary">
-                    <Image
-                      src={testimonials[currentTestimonial].image || "/placeholder.svg"}
-                      alt={testimonials[currentTestimonial].name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  className="flex items-center gap-4"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="relative h-16 w-16 rounded-full bg-gradient-to-br from-[#1a3a52] to-[#ff6b35] flex items-center justify-center shadow-lg"
+                  >
+                    <User className="h-8 w-8 text-white" />
+                  </motion.div>
                   <div>
                     <h4 className="text-lg font-bold">{testimonials[currentTestimonial].name}</h4>
                     <p className="text-sm text-muted-foreground">{testimonials[currentTestimonial].position}</p>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             </AnimatePresence>
 
             {/* Navigation buttons */}
             <div className="absolute -bottom-5 right-10 flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-white dark:bg-gray-800 shadow-md rounded-full"
-                onClick={prevTestimonial}
-                aria-label="Testimonio anterior"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="bg-white dark:bg-gray-800 shadow-md rounded-full"
-                onClick={nextTestimonial}
-                aria-label="Testimonio siguiente"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-white dark:bg-gray-800 shadow-lg rounded-full hover:bg-gradient-to-r hover:from-[#1a3a52] hover:to-[#ff6b35] hover:text-white hover:border-transparent transition-all duration-300"
+                  onClick={prevTestimonial}
+                  aria-label="Testimonio anterior"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="bg-white dark:bg-gray-800 shadow-lg rounded-full hover:bg-gradient-to-r hover:from-[#1a3a52] hover:to-[#ff6b35] hover:text-white hover:border-transparent transition-all duration-300"
+                  onClick={nextTestimonial}
+                  aria-label="Testimonio siguiente"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </motion.div>
             </div>
 
             {/* Testimonial counter */}
-            <div className="absolute -bottom-5 left-10 bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm shadow-md">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="absolute -bottom-5 left-10 bg-gradient-to-r from-[#1a3a52] to-[#ff6b35] text-white px-4 py-2 rounded-full text-sm shadow-lg font-medium"
+            >
               {currentTestimonial + 1} / {testimonials.length}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
   )
 }
-

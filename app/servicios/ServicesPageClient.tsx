@@ -1,98 +1,161 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import ServiceCategories from "@/components/service-categories"
+import { useRef } from "react"
+import Link from "next/link"
+import { motion, useInView } from "framer-motion"
+import { ArrowRight, CheckCircle, Phone, MapPin, Mail } from "lucide-react"
 import { PageHeader } from "@/components/page-header"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ArrowRight, CheckCircle, Shield, Clock, Award, Phone, Zap, Leaf, Building2, Wrench } from "lucide-react"
-import Image from "next/image"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import ImageWithFallback from "@/components/image-with-fallback"
+
+// Data for the service categories
+const serviceCategories = [
+  {
+    id: "mantenimiento-viviendas",
+    title: "Mantenimiento de Viviendas",
+    description: "Soluciones completas para el mantenimiento y cuidado de su hogar o propiedad residencial.",
+    color: "from-blue-500 to-blue-600",
+    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
+    icon: "🏠",
+    features: [
+      "Reparaciones generales para todo tipo de problemas en el hogar",
+      "Mantenimiento preventivo para prevenir problemas mayores",
+      "Renovaciones y mejoras de espacios residenciales",
+      "Servicios profesionales de pintura interior y exterior",
+    ],
+    services: [
+      {
+        title: "Reparaciones generales",
+        description: "Servicio rápido y confiable para solucionar cualquier problema en su hogar.",
+        image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Mantenimiento preventivo",
+        description: "Programas regulares para evitar costosas reparaciones en el futuro.",
+        image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Renovaciones",
+        description: "Transforme y actualice los espacios de su hogar con nuestro servicio profesional.",
+        image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Pintura y acabados",
+        description: "Servicios de alta calidad que renuevan la apariencia de sus espacios.",
+        image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=600&auto=format&fit=crop",
+      },
+    ],
+  },
+  {
+    id: "laboratorio-hormigon",
+    title: "Laboratorio de Hormigón",
+    description:
+      "Análisis, pruebas y certificación de calidad para todo tipo de hormigón y materiales de construcción.",
+    color: "from-green-500 to-green-600",
+    image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=800&auto=format&fit=crop",
+    icon: "🧪",
+    features: [
+      "Análisis de resistencia y durabilidad del hormigón",
+      "Certificaciones oficiales para proyectos de construcción",
+      "Desarrollo de mezclas personalizadas según necesidades específicas",
+      "Asesoramiento experto en materiales y aplicaciones",
+    ],
+    services: [
+      {
+        title: "Pruebas de resistencia",
+        description: "Evaluación precisa de la resistencia y durabilidad de sus materiales de construcción.",
+        image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Certificación de calidad",
+        description: "Documentación oficial que avala la calidad de sus proyectos de construcción.",
+        image: "https://images.unsplash.com/photo-1587582345426-bf07d528f471?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Desarrollo de mezclas",
+        description: "Fórmulas personalizadas que se adaptan perfectamente a sus necesidades específicas.",
+        image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Consultoría técnica",
+        description: "Asesoramiento profesional para optimizar el uso de materiales en sus proyectos.",
+        image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=600&auto=format&fit=crop",
+      },
+    ],
+  },
+  {
+    id: "asistencia-financiera",
+    title: "Servicios de Asistencia Financiera",
+    description: "Soluciones financieras para facilitar sus proyectos de construcción y mantenimiento.",
+    color: "from-purple-500 to-purple-600",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop",
+    icon: "💰",
+    features: [
+      "Opciones de financiamiento adaptadas a su presupuesto",
+      "Consultoría para optimizar la inversión en su proyecto",
+      "Facilidades de pago flexibles para sus servicios",
+      "Elaboración de presupuestos claros y transparentes",
+    ],
+    services: [
+      {
+        title: "Financiamiento de proyectos",
+        description: "Alternativas accesibles para hacer realidad sus proyectos constructivos.",
+        image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Asesoría financiera",
+        description: "Orientación profesional para maximizar el retorno de su inversión.",
+        image: "https://images.unsplash.com/photo-1591696205602-2f950c417cb9?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Planes de pago",
+        description: "Opciones flexibles que se adaptan a su capacidad de pago y necesidades.",
+        image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=600&auto=format&fit=crop",
+      },
+      {
+        title: "Presupuestos detallados",
+        description: "Información completa y transparente sobre los costos de su proyecto.",
+        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=600&auto=format&fit=crop",
+      },
+    ],
+  },
+]
 
 export default function ServicesPageClient() {
-  const [activeCategory, setActiveCategory] = useState("complementarios")
+  const headerRef = useRef(null)
+  const servicesRef = useRef(null)
+  const contactRef = useRef(null)
 
-  // Handle hash navigation
-  useEffect(() => {
-    const hash = window.location.hash.substring(1)
-    if (hash) {
-      setActiveCategory(hash)
-
-      // Scroll to the section after a short delay to ensure rendering
-      setTimeout(() => {
-        const element = document.getElementById(hash)
-        if (element) {
-          const headerOffset = 100
-          const elementPosition = element.getBoundingClientRect().top
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth",
-          })
-        }
-      }, 300)
-    }
-  }, [])
-
-  const serviceHighlights = [
-    {
-      icon: <Zap className="h-8 w-8 text-primary" />,
-      title: "Servicios Complementarios",
-      description: "Impermeabilización, corte y demolición, colocación de concreto y más",
-      link: "#complementarios",
-      image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop",
-      color: "from-blue-500/10 to-blue-600/10",
-    },
-    {
-      icon: <Leaf className="h-8 w-8 text-primary" />,
-      title: "Innovación y Sostenibilidad",
-      description: "Soluciones modernas y sostenibles para la industria de la construcción",
-      link: "#innovacion",
-      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=600&auto=format&fit=crop",
-      color: "from-green-500/10 to-green-600/10",
-    },
-    {
-      icon: <Building2 className="h-8 w-8 text-primary" />,
-      title: "Servicios para Empresas",
-      description: "Asesoría, consultoría y planificación para proyectos comerciales",
-      link: "#empresas",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop",
-      color: "from-purple-500/10 to-purple-600/10",
-    },
-    {
-      icon: <Wrench className="h-8 w-8 text-primary" />,
-      title: "Mantenimiento y Limpieza",
-      description: "Servicios para prolongar la vida útil de sus estructuras",
-      link: "#mantenimiento",
-      image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop",
-      color: "from-amber-500/10 to-amber-600/10",
-    },
-  ]
+  const isServicesInView = useInView(servicesRef, { once: true, amount: 0.1 })
+  const isContactInView = useInView(contactRef, { once: true, amount: 0.1 })
 
   return (
-    <div className="min-h-screen pt-24 pb-16 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-primary/5 to-transparent -z-10"></div>
-      <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute inset-0 pattern-dots opacity-5 -z-10"></div>
+    <div className="min-h-screen pt-16 pb-16 relative overflow-hidden">
+      {/* Hero Section */}
+      <div ref={headerRef} className="relative pt-20 pb-10 overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <PageHeader
+              title="Nuestros Servicios"
+              description="Soluciones integrales para todas sus necesidades"
+              className="text-center mb-8"
+            />
+          </motion.div>
 
-      <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <PageHeader
-            title="Nuestros Servicios"
-            description="Soluciones integrales para todas sus necesidades de construcción"
-            className="text-center mb-12"
-          />
-
-          {/* Hero section for services */}
-          <div className="relative rounded-2xl overflow-hidden mb-16 shadow-xl">
-            <div className="relative h-[400px] w-full">
-              <Image
-                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1920&auto=format&fit=crop"
+          {/* Hero Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative rounded-2xl overflow-hidden mb-10 shadow-xl"
+          >
+            <div className="relative h-[350px] md:h-[400px] w-full">
+              <ImageWithFallback
+                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1920&auto=format&fit=crop"
                 alt="Servicios de construcción"
                 fill
+                priority
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
@@ -100,10 +163,10 @@ export default function ServicesPageClient() {
             <div className="absolute inset-0 flex items-center">
               <div className="container mx-auto px-4">
                 <div className="max-w-2xl text-white">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Expertos en Soluciones de Construcción</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Expertos en Soluciones Integrales</h2>
                   <p className="text-lg text-white/90 mb-6">
-                    En SNG SERVIMAX ofrecemos una amplia gama de servicios especializados para satisfacer todas sus
-                    necesidades en el sector de la construcción.
+                    En SNG SERVIMAX ofrecemos servicios especializados de mantenimiento, laboratorio de hormigón y
+                    asistencia financiera respaldados por años de experiencia.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <Button className="btn-gradient shadow-blue" asChild>
@@ -114,7 +177,7 @@ export default function ServicesPageClient() {
                       className="bg-white/10 border-white/20 hover:bg-white/20 text-white"
                       asChild
                     >
-                      <a href="tel:+15551234567" className="flex items-center gap-2">
+                      <a href="tel:+18494608077" className="flex items-center gap-2">
                         <Phone className="h-4 w-4" /> Llamar Ahora
                       </a>
                     </Button>
@@ -122,263 +185,163 @@ export default function ServicesPageClient() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
+        </div>
+      </div>
 
-          {/* Service highlights with images */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center gradient-heading">Nuestras Áreas de Servicio</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {serviceHighlights.map((service, index) => (
+      {/* Main Services Section */}
+      <section className="py-12 bg-gradient-to-b from-muted/10 to-transparent" ref={servicesRef} id="servicios">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isServicesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <div className="inline-block px-3 py-1 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
+              NUESTROS SERVICIOS
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-heading">Soluciones a su Medida</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Descubra nuestra amplia gama de servicios diseñados para satisfacer sus necesidades específicas
+            </p>
+          </motion.div>
+
+          {/* Services grid */}
+          <div className="space-y-24">
+            {serviceCategories.map((category, categoryIndex) => (
+              <div key={category.id} id={category.id} className="scroll-mt-24">
                 <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isServicesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                  transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
+                  className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
                 >
-                  <Link href={service.link} className="block h-full">
-                    <div className="relative h-full overflow-hidden rounded-xl shadow-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:shadow-xl transition-all duration-300">
-                      <div className="relative h-48 w-full overflow-hidden">
-                        <Image
-                          src={service.image || "/placeholder.svg"}
-                          alt={service.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                        <div className="absolute bottom-0 left-0 p-4">
-                          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm mb-2">
-                            {service.icon}
-                          </div>
-                          <h3 className="text-white text-xl font-bold">{service.title}</h3>
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <p className="text-muted-foreground mb-4">{service.description}</p>
-                        <div className="flex items-center text-primary font-medium">
-                          Ver detalles{" "}
-                          <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </div>
+                  <div>
+                    <div
+                      className={`inline-block px-3 py-1 rounded-full text-white text-sm font-medium mb-4 bg-gradient-to-r ${category.color}`}
+                    >
+                      <span className="mr-2">{category.icon}</span>
+                      {category.id.replace(/-/g, " ").toUpperCase()}
                     </div>
-                  </Link>
+                    <h2 className="text-3xl font-bold mb-4">{category.title}</h2>
+                    <p className="text-muted-foreground mb-6">{category.description}</p>
+
+                    <div className="space-y-4 mb-6">
+                      {category.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                          <p className="text-muted-foreground">{feature}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button className="btn-gradient shadow-blue" asChild>
+                      <Link href={`/contacto#formulario?service=${category.id}`}>Solicitar información</Link>
+                    </Button>
+                  </div>
+                  <div className="relative h-64 lg:h-auto rounded-xl overflow-hidden shadow-lg">
+                    <ImageWithFallback
+                      src={category.image || "/placeholder.svg"}
+                      alt={category.title}
+                      fill
+                      className="object-cover"
+                    />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${category.color} mix-blend-multiply opacity-40`}
+                    ></div>
+                  </div>
                 </motion.div>
-              ))}
-            </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {category.services.map((service, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={isServicesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                    >
+                      <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 card-glass">
+                        <div className="relative h-48 w-full overflow-hidden">
+                          <ImageWithFallback
+                            src={service.image || "/placeholder.svg"}
+                            alt={service.title}
+                            fill
+                            className="object-cover transition-transform duration-500 hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                          <div className="absolute bottom-0 left-0 p-4">
+                            <h3 className="text-white font-bold text-lg">{service.title}</h3>
+                          </div>
+                        </div>
+                        <CardContent className="p-4">
+                          <p className="text-muted-foreground">{service.description}</p>
+                        </CardContent>
+                        <CardFooter className="p-4 pt-0">
+                          <Button variant="link" asChild className="p-0">
+                            <Link
+                              href={`/contacto#formulario?service=${encodeURIComponent(service.title)}`}
+                              className="flex items-center gap-1 text-primary"
+                            >
+                              Solicitar este servicio <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          {/* Why choose us section */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                <Award className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Calidad Garantizada</h3>
-              <p className="text-muted-foreground text-sm">
-                Comprometidos con los más altos estándares en cada proyecto
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                <Clock className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Puntualidad</h3>
-              <p className="text-muted-foreground text-sm">Cumplimos con los plazos establecidos para cada proyecto</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                <Shield className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Seguridad</h3>
-              <p className="text-muted-foreground text-sm">Priorizamos la seguridad en todas nuestras operaciones</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-                <CheckCircle className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-lg font-bold mb-2">Profesionalismo</h3>
-              <p className="text-muted-foreground text-sm">Equipo altamente capacitado y con amplia experiencia</p>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Detailed service categories */}
-        <ServiceCategories />
-
-        {/* Why choose our services section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-16 p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center gradient-heading">¿Por qué elegir nuestros servicios?</h3>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-[300px]">
-              <Image
-                src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop"
-                alt="Equipo profesional"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 p-6">
-                <h4 className="text-white text-2xl font-bold mb-2">Experiencia y Profesionalismo</h4>
-                <p className="text-white/80">Más de 15 años de experiencia en el sector</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4">
-              <div className="p-6 bg-gradient-to-br from-primary/10 to-blue-600/10 rounded-lg">
-                <div className="text-3xl font-bold text-primary mb-2">01</div>
-                <h4 className="text-xl font-bold mb-2">Experiencia y Profesionalismo</h4>
-                <p className="text-muted-foreground">
-                  Contamos con años de experiencia en el sector y un equipo de profesionales altamente capacitados.
+      {/* Contact CTA Section */}
+      <section ref={contactRef} className="py-16 my-8 bg-gradient-to-b from-muted/30 to-transparent">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isContactInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl shadow-lg max-w-4xl mx-auto"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-2xl font-bold mb-4">¿Necesita más información?</h3>
+                <p className="text-muted-foreground mb-4">
+                  Nuestro equipo está listo para responder todas sus preguntas y proporcionarle un presupuesto detallado
+                  adaptado a sus necesidades específicas.
                 </p>
-                <Link
-                  href="/nosotros#equipo"
-                  className="inline-flex items-center gap-1 mt-4 text-primary hover:underline"
-                >
-                  Conocer nuestro equipo <ArrowRight className="h-3 w-3" />
-                </Link>
+                <Button className="btn-gradient shadow-blue w-full sm:w-auto" asChild>
+                  <Link href="/contacto#formulario">Solicitar Presupuesto</Link>
+                </Button>
               </div>
-
-              <div className="p-6 bg-gradient-to-br from-primary/10 to-blue-600/10 rounded-lg">
-                <div className="text-3xl font-bold text-primary mb-2">02</div>
-                <h4 className="text-xl font-bold mb-2">Calidad Garantizada</h4>
-                <p className="text-muted-foreground">
-                  Utilizamos materiales de primera calidad y aplicamos las mejores prácticas en todos nuestros
-                  proyectos.
-                </p>
-                <Link
-                  href="/nosotros#politicas"
-                  className="inline-flex items-center gap-1 mt-4 text-primary hover:underline"
-                >
-                  Ver política de calidad <ArrowRight className="h-3 w-3" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            <div className="p-6 bg-gradient-to-br from-primary/10 to-blue-600/10 rounded-lg">
-              <div className="text-3xl font-bold text-primary mb-2">03</div>
-              <h4 className="text-xl font-bold mb-2">Soluciones Personalizadas</h4>
-              <p className="text-muted-foreground">
-                Adaptamos nuestros servicios a las necesidades específicas de cada cliente y proyecto.
-              </p>
-              <Link
-                href="/contacto#formulario"
-                className="inline-flex items-center gap-1 mt-4 text-primary hover:underline"
-              >
-                Solicitar consulta <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-
-            <div className="p-6 bg-gradient-to-br from-primary/10 to-blue-600/10 rounded-lg">
-              <div className="text-3xl font-bold text-primary mb-2">04</div>
-              <h4 className="text-xl font-bold mb-2">Tecnología Avanzada</h4>
-              <p className="text-muted-foreground">
-                Utilizamos las últimas tecnologías y equipos para garantizar resultados óptimos en cada proyecto.
-              </p>
-              <Link
-                href="/servicios#innovacion"
-                className="inline-flex items-center gap-1 mt-4 text-primary hover:underline"
-              >
-                Ver innovaciones <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-
-            <div className="p-6 bg-gradient-to-br from-primary/10 to-blue-600/10 rounded-lg">
-              <div className="text-3xl font-bold text-primary mb-2">05</div>
-              <h4 className="text-xl font-bold mb-2">Compromiso con el Cliente</h4>
-              <p className="text-muted-foreground">
-                Nos comprometemos a superar las expectativas de nuestros clientes en cada proyecto.
-              </p>
-              <Link href="/contacto" className="inline-flex items-center gap-1 mt-4 text-primary hover:underline">
-                Contactar ahora <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-10 text-center">
-            <Button asChild size="lg" className="btn-gradient shadow-blue">
-              <Link href="/contacto#formulario" className="flex items-center gap-2">
-                Solicitar presupuesto <ArrowRight className="h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* Custom service CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-16 relative rounded-xl overflow-hidden shadow-xl"
-          id="servicio-personalizado"
-        >
-          <div className="relative h-[300px] w-full">
-            <Image
-              src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1920&auto=format&fit=crop"
-              alt="Servicio personalizado"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/30"></div>
-          </div>
-          <div className="absolute inset-0 flex items-center">
-            <div className="container mx-auto px-4">
-              <div className="max-w-2xl text-white p-8">
-                <h3 className="text-3xl font-bold mb-4">¿Necesita un servicio personalizado?</h3>
-                <p className="text-lg text-white/90 mb-6">
-                  Si no encuentra el servicio que necesita o requiere una solución personalizada, no dude en
-                  contactarnos. Estaremos encantados de ayudarle a desarrollar una solución a medida para su proyecto.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button className="btn-gradient shadow-blue" asChild>
-                    <Link href="/contacto#formulario">Contactar ahora</Link>
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="bg-white/10 border-white/20 hover:bg-white/20 text-white"
-                    asChild
-                  >
-                    <a href="tel:+15551234567" className="flex items-center gap-2">
-                      <Phone className="h-4 w-4" /> Llamar ahora
-                    </a>
-                  </Button>
+              <div className="space-y-4">
+                <h4 className="font-bold text-lg">Contacto Directo</h4>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-primary" />
+                  <a href="tel:+18494608077" className="hover:text-primary transition-colors">
+                    849 460 8077
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 w-5 text-primary" />
+                  <a href="mailto:sngservimax@gmail.com" className="hover:text-primary transition-colors">
+                    sngservimax@gmail.com
+                  </a>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <a href="/contacto#mapa" className="hover:text-primary transition-colors">
+                    Manzana Q no. El casique de Veron, República Dominicana
+                  </a>
                 </div>
               </div>
             </div>
-          </div>
-        </motion.div>
-      </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   )
 }
-

@@ -6,15 +6,22 @@ import { PageHeader } from "@/components/page-header"
 import CompanyValues from "@/components/company-values"
 import TeamSection from "@/components/team-section"
 import { Button } from "@/components/ui/button"
-import { toast } from "@/components/ui/use-toast"
+import { useState } from "react"
+import CurriculumForm from "@/components/curriculum-form"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 export default function AboutPageClient() {
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   const handleSendResume = () => {
-    toast({
-      title: "Formulario de CV",
-      description: "Se abrirá el formulario para enviar su currículum",
-    })
-    // In a real application, this would open a form or redirect to a careers page
+    setDialogOpen(true)
   }
 
   return (
@@ -83,15 +90,15 @@ export default function AboutPageClient() {
 
               <div className="grid grid-cols-2 gap-4 mt-8">
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                  <div className="text-3xl font-bold text-primary">15+</div>
+                  <div className="text-3xl font-bold text-primary">10+</div>
                   <div className="text-sm text-muted-foreground">Años de experiencia</div>
                 </div>
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                  <div className="text-3xl font-bold text-primary">500+</div>
+                  <div className="text-3xl font-bold text-primary">25+</div>
                   <div className="text-sm text-muted-foreground">Proyectos completados</div>
                 </div>
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                  <div className="text-3xl font-bold text-primary">50+</div>
+                  <div className="text-3xl font-bold text-primary">10+</div>
                   <div className="text-sm text-muted-foreground">Profesionales</div>
                 </div>
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -164,15 +171,29 @@ export default function AboutPageClient() {
             Estamos siempre en búsqueda de talento para unirse a nuestro equipo. Si está interesado en formar parte de
             SNG SERVIMAX, envíenos su currículum.
           </p>
-          <Button
-            className="btn-gradient shadow-blue px-6 py-3 rounded-lg text-white font-medium"
-            onClick={handleSendResume}
-          >
-            Enviar Currículum
-          </Button>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="default"
+                className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
+                onClick={handleSendResume}
+              >
+                Enviar Currículum
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto bg-background border">
+              <DialogHeader>
+                <DialogTitle>Enviar Currículum</DialogTitle>
+                <DialogDescription>
+                  Complete el formulario a continuación para enviar su currículum. Revisaremos su perfil y nos pondremos
+                  en contacto si hay una vacante que se ajuste a sus habilidades.
+                </DialogDescription>
+              </DialogHeader>
+              <CurriculumForm />
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
     </div>
   )
 }
-

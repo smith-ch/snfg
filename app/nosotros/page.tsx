@@ -1,12 +1,12 @@
-import type { Metadata } from "next"
-import AboutPageClient from "./AboutPageClient"
+"use client";
 
-export const metadata: Metadata = {
-  title: "Nosotros | SNG SERVIMAX",
-  description: "Conozca más sobre SNG SERVIMAX, nuestra historia, valores y equipo",
-}
+import dynamic from "next/dynamic";
+
+const AboutPageClient = dynamic(() => import("./AboutPageClient"), { ssr: false });
 
 export default function AboutPage() {
-  return <AboutPageClient />
+  if (typeof window === "undefined") {
+    return null; // Prevent server-side rendering issues
+  }
+  return <AboutPageClient />;
 }
-

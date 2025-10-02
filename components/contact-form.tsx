@@ -1,193 +1,238 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Loader2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useSearchParams } from "next/navigation"
+import type React from "react"
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "El nombre debe tener al menos 2 caracteres.",
-  }),
-  email: z.string().email({
-    message: "Por favor ingrese un correo electrónico válido.",
-  }),
-  phone: z.string().min(7, {
-    message: "Por favor ingrese un número de teléfono válido.",
-  }),
-  subject: z.string().min(5, {
-    message: "El asunto debe tener al menos 5 caracteres.",
-  }),
-  service: z.string().optional(),
-  message: z.string().min(10, {
-    message: "El mensaje debe tener al menos 10 caracteres.",
-  }),
-})
+import { useState, type FormEvent } from "react"
+import { motion } from "framer-motion"
+import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import emailjs from "@emailjs/browser"
+import { EMAILJS_CONFIG } from "@/lib/emailjs-config"
 
 export default function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const searchParams = useSearchParams()
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      service: "",
-      message: "",
-    },
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    service: "",
+    message: "",
   })
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
-  // Pre-fill the service field if it's in the URL
-  useEffect(() => {
-    const service = searchParams.get("service")
-    if (service) {
-      form.setValue("service", service)
-      form.setValue("subject", `Consulta sobre ${service}`)
-    }
-  }, [searchParams, form])
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setStatus("loading")
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true)
-
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values)
-      setIsSubmitting(false)
-      form.reset()
-      toast({
-        title: "Mensaje enviado",
-        description: "Gracias por contactarnos. Nos pondremos en contacto con usted pronto.",
+    try {
+      const now = new Date()
+      const formattedTime = now.toLocaleString("es-DO", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       })
-    }, 1500)
+
+      const result = await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          title: `Solicitud de ${formData.service || "información"}`,
+          time: formattedTime,
+          message: formData.message,
+        },
+        EMAILJS_CONFIG.PUBLIC_KEY,
+      )
+
+      if (result.status === 200) {
+        setStatus("success")
+        setFormData({ name: "", email: "", phone: "", company: "", service: "", message: "" })
+        setTimeout(() => setStatus("idle"), 5000)
+      } else {
+        setStatus("error")
+        setTimeout(() => setStatus("idle"), 5000)
+      }
+    } catch (error) {
+      console.error("Error al enviar el correo:", error)
+      setStatus("error")
+      setTimeout(() => setStatus("idle"), 5000)
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nombre</FormLabel>
-                <FormControl>
-                  <Input placeholder="Su nombre" className="bg-white/50 dark:bg-gray-800/50" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Su email" type="email" className="bg-white/50 dark:bg-gray-800/50" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
+    >
+      <h3 className="text-2xl font-bold mb-6">Envíanos un Mensaje</h3>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium mb-2">
+              Nombre Completo *
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition-all"
+              placeholder="Tu nombre"
+              disabled={status === "loading"}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium mb-2">
+              Correo Electrónico *
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition-all"
+              placeholder="tu@email.com"
+              disabled={status === "loading"}
+            />
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Teléfono</FormLabel>
-                <FormControl>
-                  <Input placeholder="Su teléfono" className="bg-white/50 dark:bg-gray-800/50" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium mb-2">
+              Teléfono *
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition-all"
+              placeholder="(809) 000-0000"
+              disabled={status === "loading"}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="company" className="block text-sm font-medium mb-2">
+              Empresa
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition-all"
+              placeholder="Nombre de tu empresa"
+              disabled={status === "loading"}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="service" className="block text-sm font-medium mb-2">
+            Servicio de Interés
+          </label>
+          <select
+            id="service"
             name="service"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Servicio de interés</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="bg-white/50 dark:bg-gray-800/50">
-                      <SelectValue placeholder="Seleccione un servicio" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="impermeabilizacion">Impermeabilización</SelectItem>
-                    <SelectItem value="corte">Corte y demolición</SelectItem>
-                    <SelectItem value="concreto">Colocación de concreto</SelectItem>
-                    <SelectItem value="maquinaria">Alquiler de maquinaria</SelectItem>
-                    <SelectItem value="planta">Construcción de planta</SelectItem>
-                    <SelectItem value="residuos">Gestión de residuos</SelectItem>
-                    <SelectItem value="asesoria">Asesoría empresarial</SelectItem>
-                    <SelectItem value="mantenimiento">Mantenimiento</SelectItem>
-                    <SelectItem value="otro">Otro</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            value={formData.service}
+            onChange={handleChange}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition-all"
+            disabled={status === "loading"}
+          >
+            <option value="">Selecciona un servicio</option>
+            <option value="construccion">Construcción</option>
+            <option value="remodelacion">Remodelación</option>
+            <option value="pintura">Pintura</option>
+            <option value="plomeria">Plomería</option>
+            <option value="electricidad">Electricidad</option>
+            <option value="albañileria">Albañilería</option>
+            <option value="carpinteria">Carpintería</option>
+            <option value="techos">Techos</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium mb-2">
+            Mensaje *
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+            rows={5}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-[#1a3a52] focus:border-transparent transition-all resize-none"
+            placeholder="Cuéntanos sobre tu proyecto..."
+            disabled={status === "loading"}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="subject"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Asunto</FormLabel>
-              <FormControl>
-                <Input placeholder="Asunto del mensaje" className="bg-white/50 dark:bg-gray-800/50" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mensaje</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Escriba su mensaje aquí"
-                  className="min-h-[120px] bg-white/50 dark:bg-gray-800/50"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="w-full btn-gradient shadow-blue" disabled={isSubmitting}>
-          {isSubmitting ? (
+
+        {status === "success" && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-4 bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-lg"
+          >
+            <CheckCircle className="h-5 w-5" />
+            <p>¡Mensaje enviado exitosamente! Nos pondremos en contacto pronto.</p>
+          </motion.div>
+        )}
+
+        {status === "error" && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg"
+          >
+            <AlertCircle className="h-5 w-5" />
+            <p>Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.</p>
+          </motion.div>
+        )}
+
+        <Button
+          type="submit"
+          disabled={status === "loading"}
+          className="w-full bg-[#1a3a52] hover:bg-[#ff6b35] text-white py-6 text-lg font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {status === "loading" ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               Enviando...
             </>
           ) : (
-            "Enviar Mensaje"
+            <>
+              <Send className="mr-2 h-5 w-5" />
+              Enviar Mensaje
+            </>
           )}
         </Button>
       </form>
-    </Form>
+    </motion.div>
   )
 }
-

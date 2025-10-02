@@ -10,106 +10,95 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 const serviceCategories = [
   {
-    id: "complementarios",
-    title: "Servicios Complementarios en Construcción",
-    description: "Soluciones especializadas para complementar sus proyectos de construcción",
-    icon: "🏗️",
-    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop",
-    color: "from-blue-500 to-blue-600",
+    id: "mantenimiento-viviendas",
+    title: "Mantenimiento de Viviendas",
+    description: "Soluciones completas para el mantenimiento y cuidado de su hogar o propiedad residencial.",
+    icon: "🏠",
+    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop",
+    color: "from-primary to-blue-600",
+    iconBg: "bg-primary/10",
     services: [
       {
-        title: "Impermeabilización de estructuras",
-        description: "Protección contra humedad y filtraciones para todo tipo de estructuras",
+        title: "Reparaciones generales",
+        description: "Servicio de reparaciones para todo tipo de problemas en el hogar",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Corte y demolición de concreto",
-        description: "Servicios precisos de corte y demolición con equipos especializados",
+        title: "Mantenimiento preventivo",
+        description: "Programas de mantenimiento regular para prevenir problemas mayores",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Colocación de concreto",
-        description: "Instalación profesional de concreto para todo tipo de proyectos",
+        title: "Renovaciones",
+        description: "Actualización y mejora de espacios residenciales",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Alquiler de maquinaria pesada",
-        description: "Amplia gama de maquinaria pesada disponible para sus proyectos",
+        title: "Pintura y acabados",
+        description: "Servicios profesionales de pintura interior y exterior",
         icon: <CheckCircle className="h-5 w-5" />,
       },
     ],
   },
   {
-    id: "innovacion",
-    title: "Servicios de Innovación y Sostenibilidad",
-    description: "Soluciones modernas y sostenibles para la industria de la construcción",
-    icon: "🌱",
-    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=800&auto=format&fit=crop",
-    color: "from-green-500 to-green-600",
+    id: "laboratorio-hormigon",
+    title: "Laboratorio de Hormigón",
+    description:
+      "Análisis, pruebas y certificación de calidad para todo tipo de hormigón y materiales de construcción.",
+    icon: "🧪",
+    image: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=600&auto=format&fit=crop",
+    color: "from-secondary to-indigo-600",
+    iconBg: "bg-secondary/10",
     services: [
       {
-        title: "Construcción de planta de Hormigón",
-        description: "Diseño y construcción de plantas de hormigón eficientes y modernas",
+        title: "Pruebas de resistencia",
+        description: "Análisis de resistencia y durabilidad del hormigón",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Instalación de planta de Hormigón",
-        description: "Instalación profesional de plantas de hormigón con los más altos estándares",
+        title: "Certificación de calidad",
+        description: "Certificaciones oficiales para proyectos de construcción",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Gestión de residuos de construcción",
-        description: "Manejo responsable y sostenible de residuos de construcción",
+        title: "Desarrollo de mezclas",
+        description: "Creación de mezclas personalizadas según necesidades específicas",
+        icon: <CheckCircle className="h-5 w-5" />,
+      },
+      {
+        title: "Consultoría técnica",
+        description: "Asesoramiento experto en materiales y aplicaciones",
         icon: <CheckCircle className="h-5 w-5" />,
       },
     ],
   },
   {
-    id: "empresas",
-    title: "Servicios para Empresas y Proyectos Comerciales",
-    description: "Soluciones integrales para empresas y proyectos comerciales",
-    icon: "🏢",
-    image: "https://images.unsplash.com/photo-1556156653-e5a7c69cc4c5?q=80&w=800&auto=format&fit=crop",
-    color: "from-purple-500 to-purple-600",
+    id: "asistencia-financiera",
+    title: "Servicios de Asistencia Financiera",
+    description: "Soluciones financieras para facilitar sus proyectos de construcción y mantenimiento.",
+    icon: "💰",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop",
+    color: "from-accent to-purple-600",
+    iconBg: "bg-accent/10",
     services: [
       {
-        title: "Asesoría empresarial",
-        description: "Consultoría especializada para optimizar sus operaciones de construcción",
+        title: "Financiamiento de proyectos",
+        description: "Opciones de financiamiento adaptadas a su presupuesto",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Consultoría en optimización de costos",
-        description: "Estrategias efectivas para reducir costos sin comprometer la calidad",
+        title: "Asesoría financiera",
+        description: "Consultoría para optimizar la inversión en su proyecto",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Diseño y planificación de proyectos",
-        description: "Planificación detallada y diseño profesional para sus proyectos",
-        icon: <CheckCircle className="h-5 w-5" />,
-      },
-    ],
-  },
-  {
-    id: "mantenimiento",
-    title: "Servicios de Mantenimiento y Limpieza",
-    description: "Mantenimiento profesional para prolongar la vida útil de sus estructuras",
-    icon: "🧹",
-    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800&auto=format&fit=crop",
-    color: "from-amber-500 to-amber-600",
-    services: [
-      {
-        title: "Mantenimiento de edificaciones",
-        description: "Servicios regulares de mantenimiento para todo tipo de edificaciones",
+        title: "Planes de pago",
+        description: "Facilidades de pago flexibles para sus servicios",
         icon: <CheckCircle className="h-5 w-5" />,
       },
       {
-        title: "Limpieza post-construcción",
-        description: "Limpieza profesional después de finalizar proyectos de construcción",
-        icon: <CheckCircle className="h-5 w-5" />,
-      },
-      {
-        title: "Pintura, acabados y reparación",
-        description: "Servicios de pintura, acabados y reparaciones generales",
+        title: "Presupuestos detallados",
+        description: "Elaboración de presupuestos claros y transparentes",
         icon: <CheckCircle className="h-5 w-5" />,
       },
     ],
@@ -133,14 +122,14 @@ export default function ServicesOverview() {
             NUESTROS SERVICIOS
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 gradient-heading">
-            Soluciones Integrales para sus Proyectos
+            Soluciones Integrales para sus Necesidades
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Ofrecemos una amplia gama de servicios especializados para satisfacer todas sus necesidades de construcción
+            Ofrecemos una amplia gama de servicios especializados para satisfacer todas sus necesidades
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {serviceCategories.map((category, categoryIndex) => (
             <motion.div
               key={category.id}
@@ -149,7 +138,7 @@ export default function ServicesOverview() {
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
               className="group"
             >
-              <Card className="h-full overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-gray-800/5 backdrop-blur-sm">
+              <Card className="h-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-glass hover-scale">
                 <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                   <Image
                     src={category.image || "/placeholder.svg"}
@@ -173,7 +162,9 @@ export default function ServicesOverview() {
                   <ul className="space-y-2">
                     {category.services.slice(0, 2).map((service, index) => (
                       <li key={index} className="flex gap-2 group/item">
-                        <span className="text-primary flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform">
+                        <span
+                          className={`${category.iconBg} p-1 rounded-full flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform`}
+                        >
                           {service.icon}
                         </span>
                         <div>
@@ -211,7 +202,7 @@ export default function ServicesOverview() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-8 sm:mt-12 text-center"
         >
-          <Button size="lg" className="btn-gradient shadow-blue group text-sm sm:text-base" asChild>
+          <Button size="lg" className="gradient-animated shadow-blue group text-sm sm:text-base" asChild>
             <Link href="/servicios" className="flex items-center gap-2">
               Ver todos nuestros servicios
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -222,4 +213,3 @@ export default function ServicesOverview() {
     </section>
   )
 }
-

@@ -1,131 +1,76 @@
 "use client"
 
-import { useRef } from "react"
+import { motion } from "framer-motion"
 import Image from "next/image"
-import { motion, useInView } from "framer-motion"
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { User } from "lucide-react"
 
-const team = [
+const teamMembers = [
   {
-    name: "Carlos Mendoza",
-    position: "Director General",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop",
-    bio: "Con más de 20 años de experiencia en el sector de la construcción, Carlos lidera nuestra empresa con visión y compromiso.",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-    },
+    name: "Berenice Peguero",
+    role: "Directora General",
+    image: "/images/team/berenice-peguero.jpeg",
   },
   {
-    name: "Laura Sánchez",
-    position: "Directora de Operaciones",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
-    bio: "Especialista en gestión de proyectos y optimización de procesos, Laura garantiza la eficiencia en todas nuestras operaciones.",
-    social: {
-      linkedin: "#",
-      instagram: "#",
-    },
+    name: "Angel Jimenez",
+    role: "Gerente de Operaciones",
+    icon: true,
   },
   {
-    name: "Miguel Rodríguez",
-    position: "Jefe de Ingeniería",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
-    bio: "Ingeniero civil con amplia experiencia en diseño y ejecución de proyectos complejos de construcción.",
-    social: {
-      linkedin: "#",
-      facebook: "#",
-    },
+    name: "Smith Rodriguez",
+    role: "Supervisor de Proyectos",
+    image: "/images/team/favicon.png",
   },
   {
-    name: "Ana Martínez",
-    position: "Directora de Sostenibilidad",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop",
-    bio: "Especialista en prácticas sostenibles y gestión ambiental en proyectos de construcción.",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-    },
+    name: "Luis Peguero",
+    role: "Coordinador Técnico",
+    icon: true,
   },
 ]
 
 export default function TeamSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.1 })
-
   return (
-    <div ref={ref} className="py-8">
-      <h3 className="text-2xl font-bold mb-8">Nuestro Equipo</h3>
+    <section className="py-20 bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nuestro Equipo</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Profesionales comprometidos con la excelencia
+          </p>
+        </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {team.map((member, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-          >
-            <Card className="h-full overflow-hidden hover:shadow-md transition-shadow">
-              <div className="relative h-64 w-full overflow-hidden">
-                <Image
-                  src={member.image || "/placeholder.svg"}
-                  alt={member.name}
-                  fill
-                  className="object-cover transition-transform duration-500 hover:scale-105"
-                />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {teamMembers.map((member, index) => (
+            <motion.div
+              key={member.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="relative h-64 bg-gradient-to-br from-[#1a3a52] to-[#2d5a7b]">
+                {member.icon ? (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <User className="h-24 w-24 text-white/80" />
+                  </div>
+                ) : (
+                  <Image src={member.image || "/placeholder.svg"} alt={member.name} fill className="object-cover" />
+                )}
               </div>
-              <CardHeader>
-                <h4 className="text-xl font-bold">{member.name}</h4>
-                <p className="text-primary font-medium">{member.position}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{member.bio}</p>
-              </CardContent>
-              <CardFooter>
-                <div className="flex gap-4">
-                  {member.social.linkedin && (
-                    <a
-                      href={member.social.linkedin}
-                      aria-label="LinkedIn"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Linkedin size={20} />
-                    </a>
-                  )}
-                  {member.social.twitter && (
-                    <a
-                      href={member.social.twitter}
-                      aria-label="Twitter"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Twitter size={20} />
-                    </a>
-                  )}
-                  {member.social.facebook && (
-                    <a
-                      href={member.social.facebook}
-                      aria-label="Facebook"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Facebook size={20} />
-                    </a>
-                  )}
-                  {member.social.instagram && (
-                    <a
-                      href={member.social.instagram}
-                      aria-label="Instagram"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Instagram size={20} />
-                    </a>
-                  )}
-                </div>
-              </CardFooter>
-            </Card>
-          </motion.div>
-        ))}
+              <div className="p-6 text-center">
+                <h3 className="text-xl font-bold mb-2">{member.name}</h3>
+                <p className="text-muted-foreground">{member.role}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
-
