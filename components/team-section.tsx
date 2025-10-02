@@ -6,14 +6,14 @@ import { User } from "lucide-react"
 
 const teamMembers = [
   {
-    name: "Berenice Peguero",
-    role: "Directora General",
-    image: "/images/team/berenice-peguero.jpeg",
+    name: "Angel Guillermo Gimenez",
+    role: "Director General",
+    icon: true,
   },
   {
-    name: "Angel Jimenez",
+    name: "Berenice Peguero",
     role: "Gerente de Operaciones",
-    icon: true,
+    image: "/images/team/berenice-peguero.jpeg",
   },
   {
     name: "Smith Rodriguez",
